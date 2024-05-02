@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Pescamines</string>
+
+    <string name="help_title">AJUDA</string>
+    <string name="help_subtitle">Com jugar?</string>
+    <string name="help_text">
+        Et sents com un nen croata als anys 90? No passa res! Aquí tens una petita guia de què tracta i com jugar al pescamines:
+
+        El joc tracta de revel·lar totes les caselles d\'una graella que no amaguin una mina. Algunes caselles tenen un número, aquest número indica les mines que sumen totes les caselles circumdants. Així, si una casella té el número 3, vol dir que de les vuit caselles que hi ha al voltant (si no és en una cantonada o vora) n\'hi ha 3 amb mines i 5 sense mines.
+
+        Si es descobreix una casella amb una mina es perd la partida !!
+
+        Descobrir totes les caselles sense mina significa guanyar la partida !!
+
+        Bona sort camarada! :)
+    </string>
+
+    <string name="config_title">CONFIGURACIÓ DE LA PARTIDA</string>
+    <string name="config_alias">Pseudònim: </string>
+    <string name="config_grid">Mida graella: </string>
+    <string name="config_time">Temporitzador: </string>
+    <string name="config_bombs">Percentatge de mines: </string>
+
+    <string name="result_title">RESULTATS PARTIDA</string>
+    <string name="result_date">Dia i hora: </string>
+    <string name="result_log">Informació partida: </string>
+    <string name="result_mail">Correu electrònic: </string>
+    <string name="result_mailfaqs">
+        Si vols enviar el resultat de la partida a un correu electrònic, escriu-lo a la casella i prem la icona del costat. Seràs redirigit a GMAIL.
+    </string>
+
 </resources>
