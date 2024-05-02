@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -37,12 +38,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@Preview
 @Composable
 fun Minesweeper() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "main") {
         composable("main") { MainScreen(navController) }
-        composable("help") { HelpScreen() }
+        composable("help") { HelpScreen(navController) }
         composable("config") { ConfigurationScreen() }
     }
 }
@@ -67,8 +69,18 @@ fun MainScreen(navController: NavController) {
     }
 }
 @Composable
-fun HelpScreen() {
-    Text("Pàgina d'ajuda")
+fun HelpScreen(navController: NavController) {
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+    ){
+        Text("Pàgina d'ajuda")
+        Button(onClick = {navController.popBackStack()}) {
+            Text("Tornar")
+        }
+    }
+    
 }
 @Composable
 fun ConfigurationScreen() {
