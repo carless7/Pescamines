@@ -21,7 +21,7 @@ class GameViewModel : ViewModel() {
     val gameResult = MutableStateFlow(GameResult.InProgress)
 
     // Referencias al modelo de datos del juego
-    private lateinit var board: Board
+    lateinit var board: Board
     private lateinit var bombManager: BombManager
     private lateinit var numberCalculator: NumberCalculator
 
@@ -75,7 +75,7 @@ class GameViewModel : ViewModel() {
     }
 
     // Finalizar el juego y detener el temporizador
-    fun endGame(result: GameResult) {
+    private fun endGame(result: GameResult) {
         stopTimer()
         gameResult.value = result
     }
