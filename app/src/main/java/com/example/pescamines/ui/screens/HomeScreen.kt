@@ -35,8 +35,8 @@ fun HomeScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top ) {
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
             IconButton(
-                onClick = { exitProcess(0) },
-                ) {
+                onClick = { exitProcess(0) }
+            ) {
                 Icon(
                     Icons.Filled.ExitToApp,
                     tint = AppColors.SecondaryButton,
@@ -45,7 +45,9 @@ fun HomeScreen(navController: NavController) {
                 )
 
             }
-            IconButton(onClick = { navController.navigate("help") }) {
+            IconButton(
+                onClick = { navController.navigate("help") }
+            ) {
                 Icon(
                     Icons.Filled.Info,
                     tint = AppColors.SecondaryButton,
