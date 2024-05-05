@@ -1,6 +1,5 @@
 package com.example.pescamines.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
@@ -21,8 +20,6 @@ import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.ui.theme.Pink80
 import com.example.pescamines.viewmodel.GameViewModel
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
     var userName by remember { mutableStateOf(TextFieldValue(viewModel.userName.value)) }
