@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.pescamines.navigation.AppNavigation
 import com.example.pescamines.ui.theme.PescaminesTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,57 +34,8 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 //color = background(colorResource(id = R.color.my_color))
             ) {
-                Minesweeper()
+                AppNavigation()
             }
         }
     }
 }
-@Preview
-@Composable
-fun Minesweeper() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "main") {
-        composable("main") { MainScreen(navController) }
-        composable("help") { HelpScreen(navController) }
-        composable("config") { ConfigurationScreen() }
-    }
-}
-@Composable
-fun MainScreen(navController: NavController) {
-    val activity = (LocalContext.current as? Activity)
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Button(onClick = { navController.navigate("help") }) {
-            Text("Com jugar")
-        }
-        Button(onClick = { navController.navigate("config") }) {
-            Text("Nova partida")
-        }
-        Button(onClick = { activity?.finish() }) {
-            Text("Sortir")
-        }
-    }
-}
-@Composable
-fun HelpScreen(navController: NavController) {
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-    ){
-        Text("Pàgina d'ajuda")
-        Button(onClick = {navController.popBackStack()}) {
-            Text("Tornar")
-        }
-    }
-    
-}
-@Composable
-fun ConfigurationScreen() {
-    Text("Pàgina de configuració del joc")
-}
-
