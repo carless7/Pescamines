@@ -1,7 +1,6 @@
 package com.example.pescamines.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Info
@@ -20,8 +19,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
-//import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.example.pescamines.ui.theme.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,11 +71,12 @@ fun HomeScreen(navController: NavController) {
                 fontSize = 42.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Gray,
+                        color = AppColors.SecondaryButton,
                         offset = Offset(5f,5f),
                         blurRadius = 10f
                     )
                 ),
+                fontFamily = jerseyFontFamily,
                 color = AppColors.ColorTypography
             )
         }

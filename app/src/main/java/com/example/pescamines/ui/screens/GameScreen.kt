@@ -14,8 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.rememberNavController
-import com.example.pescamines.ui.screens.HomeScreen
-import com.example.pescamines.ui.screens.SettingsScreen
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
 
@@ -28,14 +26,14 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
-        HeaderSection(navController, viewModel, timerEnabled.value, timeRemaining.value)
+        HeaderSection(navController, timerEnabled.value, timeRemaining.value)
         Spacer(modifier = Modifier.height(16.dp))
         GameBoard(viewModel, boardSize.value)
     }
 }
 
 @Composable
-fun HeaderSection(navController: NavController, viewModel: GameViewModel, timerEnabled: Boolean, timeElapsed: Int) {
+fun HeaderSection(navController: NavController, timerEnabled: Boolean, timeElapsed: Int) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
         Button(onClick = { /* Implementar lógica para volver a configuración */ }) {
             Text("Configuración")
