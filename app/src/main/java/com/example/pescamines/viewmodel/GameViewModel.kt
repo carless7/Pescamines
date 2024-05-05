@@ -17,7 +17,7 @@ class GameViewModel : ViewModel() {
     val userName = MutableStateFlow("")
     val gridOption = MutableStateFlow(6)  // Tamaño del grid por defecto
     val timerEnabled = MutableStateFlow(false)
-    val bombPercentage = MutableStateFlow(25)  // Porcentaje de bombas por defecto
+    val bombPercentage = MutableStateFlow(15)  // Porcentaje de bombas por defecto
     val timeRemaining = MutableStateFlow(120)  // Temporizador en segundos
     val gameResult = MutableStateFlow(GameResult.InProgress)
 

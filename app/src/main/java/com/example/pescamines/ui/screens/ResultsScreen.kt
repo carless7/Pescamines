@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,10 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.ui.theme.AppColors
+import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.viewmodel.GameViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -45,17 +49,20 @@ import java.util.Date
 fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
     val activity = (LocalContext.current as? Activity)
     val context = LocalContext.current
+    val gameResult by viewModel.gameResult.collectAsState()
+
     var email by remember { mutableStateOf(TextFieldValue(""))}
     Column(modifier = Modifier.padding(50.dp)) {
+        Spacer(modifier = Modifier.height(25.dp))
         Text(
-            text ="Resultat de la partida: ${viewModel.gameResult}",
+            text ="Resultat de la partida: $gameResult",
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             fontSize = 25.sp,
             color = AppColors.ColorTypography
             )
         Spacer(modifier = Modifier.height(16.dp))
-        val sdf = SimpleDateFormat("'Data de la partida\n'dd-MM-yyyy '\nHora de la partida\n'HH:mm:ss z")
+        val sdf = SimpleDateFormat("'Data de la partida:\n'dd-MM-yyyy '\nHora de la partida:\n'HH:mm:ss z")
         val maildateformat = SimpleDateFormat("dd-MM-yyyy / HH:mm:ss z")
         val currentDateAndTime = sdf.format(Date())
         val maildate = maildateformat.format(Date())
@@ -66,12 +73,16 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
             fontSize = 25.sp,
             color = AppColors.ColorTypography
         )
-        Row {
+        Spacer(modifier = Modifier.height(40.dp))
+        Row (
+            verticalAlignment = Alignment.CenterVertically
+        ){
             OutlinedTextField(
                 value = email,
                 onValueChange = {newEmail ->
                     email = newEmail
                 },
+                label = { Text("Correu electrònic") },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = AppColors.ColorTypography,
                     focusedBorderColor = AppColors.ColorTypography,
@@ -79,7 +90,8 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                     focusedLabelColor = AppColors.ColorTypography,
                     unfocusedTextColor = AppColors.ColorTypography,
                     focusedTextColor = AppColors.ColorTypography
-                )
+                ),
+                modifier = Modifier.weight(1f)
 
             )
             IconButton(onClick = {
@@ -89,7 +101,8 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                     Icons.Filled.Info,
                     tint = AppColors.SecondaryButton,
                     contentDescription = "Mail_hint",
-                    modifier = Modifier.size(128.dp)
+                    modifier = Modifier
+                        .size(40.dp)
                 )
             }
         }
@@ -146,4 +159,14 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
         }
     }
 }
+@Preview(showBackground = false)
+@Composable
+fun PreviewResultsScreen() {
+    PescaminesTheme {
+        val mockNavController = rememberNavController()
+        val gameViewModel = GameViewModel()
+        ResultsScreen(navController = mockNavController, viewModel = gameViewModel)
+    }
+}
+
 
