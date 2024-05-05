@@ -1,3 +1,5 @@
+package com.example.pescamines.viewmodel
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
@@ -11,12 +13,12 @@ import com.example.pescamines.viewmodel.GameResult
 
 class GameViewModel : ViewModel() {
     // Configuración del juego
-    private val userName = MutableStateFlow("")
-    private val gridOption = MutableStateFlow(10)  // Tamaño del grid por defecto
-    private val timerEnabled = MutableStateFlow(false)
-    private val bombPercentage = MutableStateFlow(10)  // Porcentaje de bombas por defecto
-    private val timeRemaining = MutableStateFlow(120)  // Temporizador en segundos
-    private val gameResult = MutableStateFlow(GameResult.InProgress)
+    val userName = MutableStateFlow("")
+    val gridOption = MutableStateFlow(10)  // Tamaño del grid por defecto
+    val timerEnabled = MutableStateFlow(false)
+    val bombPercentage = MutableStateFlow(10)  // Porcentaje de bombas por defecto
+    val timeRemaining = MutableStateFlow(120)  // Temporizador en segundos
+    val gameResult = MutableStateFlow(GameResult.InProgress)
 
     // Referencias al modelo de datos del juego
     private lateinit var board: Board
@@ -80,6 +82,9 @@ class GameViewModel : ViewModel() {
 
     // Actualizar configuraciones y reiniciar el juego
     fun updateSettings(name: String, grid: Int, timer: Boolean, percentage: Int) {
+        if (grid < 5 || grid > 30) throw IllegalArgumentException("Grid size must be between 5 and 30")
+        if (percentage <= 0 || percentage >= 100) throw IllegalArgumentException("Bomb percentage must be between 1 and 99")
+
         userName.value = name
         gridOption.value = grid
         timerEnabled.value = timer
