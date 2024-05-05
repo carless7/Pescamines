@@ -9,7 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -19,8 +18,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.example.pescamines.ui.theme.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,7 +65,7 @@ fun HomeScreen(navController: NavController) {
             .padding(horizontal = 20.dp), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = "PescaMines",
-                fontSize = 42.sp,
+                fontSize = 72.sp,
                 style = TextStyle(
                     shadow = Shadow(
                         color = AppColors.SecondaryButton,
