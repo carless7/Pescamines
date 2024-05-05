@@ -16,11 +16,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 //import androidx.compose.ui.graphics.Color
 import com.example.pescamines.ui.theme.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.ui.theme.PescaminesTheme
 import kotlin.system.exitProcess
@@ -35,17 +40,34 @@ fun HomeScreen(navController: NavController) {
                 Icon(
                     Icons.Filled.ExitToApp,
                     tint = AppColors.SecondaryButton,
-                    contentDescription = "Sortir")
+                    contentDescription = "Sortir",
+                    modifier = Modifier.size(128.dp)
+                )
+
             }
             IconButton(onClick = { navController.navigate("help") }) {
                 Icon(
                     Icons.Filled.Info,
                     tint = AppColors.SecondaryButton,
-                    contentDescription = "Ajuda")
+                    contentDescription = "Ajuda",
+                    modifier = Modifier.size(128.dp)
+                    )
             }
         }
+    }
+    Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center ) {
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.Center) {
-            Text(text = "PescaMines")
+            Text(
+                text = "PescaMines",
+                fontSize = 42.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f,5f),
+                        blurRadius = 10f
+                    )
+                )
+            )
         }
         Spacer(modifier = Modifier.height(30.dp))
 
