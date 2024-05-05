@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pescamines.ui.theme.AppColors
@@ -33,7 +34,7 @@ import java.util.Date
 
 
 @Composable
-fun ResultsScreen(viewModel: GameViewModel, navController: NavController) {
+fun ResultsScreen(navController: NavController, viewModel: GameViewModel) {
     val activity = (LocalContext.current as? Activity)
     val context = LocalContext.current
     var email by remember { mutableStateOf(TextFieldValue(""))}

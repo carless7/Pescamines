@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 
 import com.example.pescamines.ui.screens.HomeScreen
 import com.example.pescamines.ui.screens.HelpScreen
+import com.example.pescamines.ui.screens.ResultsScreen
 import com.example.pescamines.ui.screens.SettingsScreen
 
 //import com.example.pescamines.viewmodel.com.example.pescamines.viewmodel.GameViewModel
@@ -32,9 +33,9 @@ fun AppNavigation() {
         /*
         composable("game") {
             GameScreen(navController, gameViewModel)
-        }
+        }*/
         composable("results") {
             ResultsScreen(navController, gameViewModel)
-        }*/
+        }
     }
 }
