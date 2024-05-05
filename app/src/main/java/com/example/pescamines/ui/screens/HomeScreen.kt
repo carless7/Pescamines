@@ -90,9 +90,6 @@ fun HomeScreen(navController: NavController) {
             Icon(Icons.Filled.PlayArrow, tint = Color.White ,contentDescription = "Configurar el joc")
             Text("Començar una partida")
         }
-        Button(onClick = { navController.navigate("results") }) {
-
-        }
     }
 }
 @Preview(showBackground = true)
