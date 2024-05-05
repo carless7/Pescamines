@@ -8,15 +8,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import com.example.pescamines.model.Board
 import com.example.pescamines.model.BombManager
+import com.example.pescamines.model.GameStatus
 import com.example.pescamines.model.NumberCalculator
 import com.example.pescamines.viewmodel.GameResult
 
 class GameViewModel : ViewModel() {
     // Configuración del juego
     val userName = MutableStateFlow("")
-    val gridOption = MutableStateFlow(10)  // Tamaño del grid por defecto
+    val gridOption = MutableStateFlow(6)  // Tamaño del grid por defecto
     val timerEnabled = MutableStateFlow(false)
-    val bombPercentage = MutableStateFlow(10)  // Porcentaje de bombas por defecto
+    val bombPercentage = MutableStateFlow(25)  // Porcentaje de bombas por defecto
     val timeRemaining = MutableStateFlow(120)  // Temporizador en segundos
     val gameResult = MutableStateFlow(GameResult.InProgress)
 
@@ -46,11 +47,29 @@ class GameViewModel : ViewModel() {
     fun onCellClicked(x: Int, y: Int) {
         if (!board.cells[y][x].isRevealed && !board.cells[y][x].isFlagged) {
             board.revealCell(x, y)
-            if (board.cells[y][x].hasBomb) {
-                endGame(GameResult.LostByBomb)
-            } else if (board.checkIfWon()) {
-                endGame(GameResult.Won)
+            val status = board.checkGameStatus()
+            updateGameResult(status)
+            if (status != GameStatus.InProgress) {
+                endGame(status)
             }
+        }
+    }
+
+    fun toggleFlag(x: Int, y: Int) {
+        if (!board.cells[y][x].isRevealed) {  // Solo se puede marcar/desmarcar celdas no reveladas
+            board.toggleFlag(x, y)
+            val status = board.checkGameStatus()  // Si tu juego evalúa ganar con banderas correctas, de lo contrario, omite esto
+            updateGameResult(status)
+            if (status != GameStatus.InProgress) {
+                endGame(status)
+            }
+        }
+    }
+    private fun updateGameResult(status: GameStatus) {
+        when(status) {
+            GameStatus.Won -> gameResult.value = GameResult.Won
+            GameStatus.Lost -> gameResult.value = GameResult.LostByBomb
+            else -> {} // No actualización necesaria
         }
     }
 
@@ -61,11 +80,16 @@ class GameViewModel : ViewModel() {
                 delay(1000)
                 timeRemaining.value -= 1
                 if (timeRemaining.value == 0) {
-                    endGame(GameResult.LostByTime)
+                    finalizeGame(GameResult.LostByTime)
                     break
                 }
             }
         }
+    }
+    // Función para finalizar el juego y actualizar el estado basado en GameResult
+    private fun finalizeGame(result: GameResult) {
+        gameResult.value = result
+        stopTimer()  // Detener el temporizador en cualquier finalización de juego
     }
 
 
@@ -75,11 +99,14 @@ class GameViewModel : ViewModel() {
     }
 
     // Finalizar el juego y detener el temporizador
-    private fun endGame(result: GameResult) {
+    private fun endGame(result: GameStatus) {
+        if (result == GameStatus.Lost) {
+            gameResult.value = GameResult.LostByBomb
+        } else if (result == GameStatus.Won) {
+            gameResult.value = GameResult.Won
+        }
         stopTimer()
-        gameResult.value = result
     }
-
     // Actualizar configuraciones y reiniciar el juego
     fun updateSettings(name: String, grid: Int, timer: Boolean, percentage: Int) {
         if (grid < 5 || grid > 30) throw IllegalArgumentException("Grid size must be between 5 and 30")
@@ -93,7 +120,7 @@ class GameViewModel : ViewModel() {
     }
 
     // Reiniciar el juego
-    private fun resetGame() {
+    fun resetGame() {
         timeRemaining.value = 120
         stopTimer()
         initializeGame()
@@ -103,4 +130,5 @@ class GameViewModel : ViewModel() {
         super.onCleared()
         stopTimer()  // Limpiar el temporizador cuando el ViewModel se destruya
     }
+
 }
