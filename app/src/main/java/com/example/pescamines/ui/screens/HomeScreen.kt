@@ -32,8 +32,12 @@ import kotlin.system.exitProcess
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top ) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
             IconButton(
                 onClick = { exitProcess(0) }
             ) {
@@ -57,18 +61,23 @@ fun HomeScreen(navController: NavController) {
             }
         }
     }
-    Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.Center) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center ) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = "PescaMines",
                 fontSize = 42.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Black,
+                        color = Color.Gray,
                         offset = Offset(5f,5f),
                         blurRadius = 10f
                     )
-                )
+                ),
+                color = AppColors.ColorTypography
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
@@ -83,6 +92,9 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Icon(Icons.Filled.PlayArrow, tint = Color.White ,contentDescription = "Configurar el joc")
             Text("Començar una partida")
+        }
+        Button(onClick = { navController.navigate("results") }) {
+
         }
     }
 }

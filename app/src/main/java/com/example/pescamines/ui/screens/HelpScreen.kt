@@ -47,11 +47,12 @@ fun HelpScreen(navController: NavController) {
                 fontSize = 42.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Black,
+                        color = Color.Gray,
                         offset = Offset(5f,5f),
                         blurRadius = 10f
                     )
-                )
+                ),
+                color = AppColors.ColorTypography
             )
         }
     }
@@ -68,10 +69,9 @@ fun HelpScreen(navController: NavController) {
                     "Descobrir totes les caselles sense mina significa guanyar la partida !!\n" +
                     "\n" +
                     "Bona sort camarada! :)",
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            color = AppColors.ColorTypography
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        //TODO: put logo of app or image example
     }
 }
 @Preview(showBackground = true)
