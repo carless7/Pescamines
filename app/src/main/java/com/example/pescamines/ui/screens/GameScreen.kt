@@ -1,11 +1,9 @@
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,16 +28,12 @@ import com.example.pescamines.ui.theme.PescaminesTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.material3.AlertDialog
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.input.pointer.pointerInteropFilter
+import com.example.pescamines.viewmodel.GameResult
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(navController: NavController, viewModel: GameViewModel) {
@@ -48,6 +42,7 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     val gridValue by viewModel.gridOption.collectAsState()
     val timeEnabled by viewModel.timerEnabled.collectAsState()
     val totalBombs = calculateTotalBombs(gridValue, bombPercentage)
+    val gameResult by viewModel.gameResult.collectAsState()
 
     Scaffold(
         topBar = {
@@ -83,7 +78,28 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
             }
         }
     }
+    // Mostrar un diálogo cuando el juego finaliza
+    while(gameResult != GameResult.InProgress){
+        ShowResultDialog(gameResult, navController)
+    }
 }
+
+@Composable
+fun ShowResultDialog(gameResult: GameResult, navController: NavController) {
+    if (gameResult != GameResult.InProgress) {
+        AlertDialog(
+            onDismissRequest = { /* No hacer nada al descartar */ },
+            title = { Text("S'ha acabat el joc!") },
+            text = { Text("Resultat: $gameResult") },
+            confirmButton = {
+                Button(onClick = { navController.navigate("results") }) {
+                    Text("Veure resultats")
+                }
+            }
+        )
+    }
+}
+
 
 @Composable
 fun GameBoard(viewModel: GameViewModel) {
@@ -139,7 +155,7 @@ fun GameCell(viewModel: GameViewModel, x: Int, y: Int, cell: Cell, size: Dp) {
 }
 
 fun calculateTotalBombs(gridSize: Int, bombPercentage: Int): Int {
-    return (gridSize * gridSize * bombPercentage / 100).toInt()
+    return (gridSize * gridSize * bombPercentage / 100)
 }
 
 fun getCellLabel(cell: Cell): String {
@@ -166,7 +182,7 @@ fun getNumberColor(number: Int): Color {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewSettingsScreen() {
+fun PreviewGameScreen() {
     PescaminesTheme {
         val mockNavController = rememberNavController()
         val gameViewModel = GameViewModel()
