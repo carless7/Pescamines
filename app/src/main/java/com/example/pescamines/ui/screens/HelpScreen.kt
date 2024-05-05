@@ -56,7 +56,9 @@ fun HelpScreen(navController: NavController) {
         Text(
             text = "Et sents com un nen croata als anys 90? No passa res! Aquí tens una petita guia de què tracta i com jugar al pescamines:\n" +
                     "\n" +
-                    "El joc tracta de revel·lar totes les caselles d\\'una graella que no amaguin una mina. Algunes caselles tenen un número, aquest número indica les mines que sumen totes les caselles circumdants. Així, si una casella té el número 3, vol dir que de les vuit caselles que hi ha al voltant (si no és en una cantonada o vora) n\\'hi ha 3 amb mines i 5 sense mines.\n" +
+                    "El joc tracta de revel·lar totes les caselles d\'una graella que no amaguin una mina. Algunes caselles tenen un número, aquest número indica les mines que sumen totes les caselles circumdants. Així, si una casella té el número 3, vol dir que de les vuit caselles que hi ha al voltant (si no és en una cantonada o vora) n\'hi ha 3 amb mines i 5 sense mines.\n" +
+                    "\n" +
+                    "Si prems durnat una estona en una casella la pots marcar amb una bandera.\n" +
                     "\n" +
                     "Si es descobreix una casella amb una mina es perd la partida !!\n" +
                     "\n" +
