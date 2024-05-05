@@ -1,3 +1,4 @@
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -31,7 +32,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import com.example.pescamines.ui.theme.jerseyFontFamily
 import com.example.pescamines.viewmodel.GameResult
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,8 +55,21 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("") },
+            CenterAlignedTopAppBar(
+                title = { Text(
+                    text = "PescaMines",
+                    fontSize = 56.sp,
+                    style = TextStyle(
+                        shadow = Shadow(
+                            color = Color.Black,
+                            offset = Offset(5f,5f),
+                            blurRadius = 10f
+                        )
+                    ),
+                    fontFamily = jerseyFontFamily,
+                    color = AppColors.ColorTypography,
+                    textAlign = TextAlign.Center
+                ) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigate("settings") }) {
                         Icon(Icons.Filled.Settings, contentDescription = "Configuració")

@@ -14,12 +14,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
+import com.example.pescamines.ui.theme.jerseyFontFamily
 
 @Composable
 fun HelpScreen(navController: NavController) {
@@ -38,15 +40,17 @@ fun HelpScreen(navController: NavController) {
             Spacer(modifier = Modifier.padding(25.dp))
             Text(
                 text = "Com jugar",
-                fontSize = 42.sp,
+                fontSize = 56.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Gray,
+                        color = Color.Black,
                         offset = Offset(5f,5f),
                         blurRadius = 10f
                     )
                 ),
-                color = AppColors.ColorTypography
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -66,7 +70,16 @@ fun HelpScreen(navController: NavController) {
                     "\n" +
                     "Bona sort camarada! :)",
             fontSize = 20.sp,
-            color = AppColors.ColorTypography
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = Offset(5f,5f),
+                    blurRadius = 10f
+                )
+            ),
+            fontFamily = jerseyFontFamily,
+            color = AppColors.ColorTypography,
+            textAlign = TextAlign.Center
         )
     }
 }

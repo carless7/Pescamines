@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
@@ -30,7 +31,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +46,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
+import com.example.pescamines.ui.theme.jerseyFontFamily
 import com.example.pescamines.viewmodel.GameViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -56,10 +63,17 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
         Spacer(modifier = Modifier.height(25.dp))
         Text(
             text ="Resultat de la partida: $gameResult",
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp,
-            color = AppColors.ColorTypography
+            fontSize = 20.sp,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = Offset(5f,5f),
+                    blurRadius = 10f
+                )
+            ),
+            fontFamily = jerseyFontFamily,
+            color = AppColors.ColorTypography,
+            textAlign = TextAlign.Center
             )
         Spacer(modifier = Modifier.height(16.dp))
         val sdf = SimpleDateFormat("'Data de la partida:\n'dd-MM-yyyy '\nHora de la partida:\n'HH:mm:ss z")
@@ -68,10 +82,17 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
         val maildate = maildateformat.format(Date())
         Text(
             text = currentDateAndTime,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp,
-            color = AppColors.ColorTypography
+            fontSize = 20.sp,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = Offset(5f,5f),
+                    blurRadius = 10f
+                )
+            ),
+            fontFamily = jerseyFontFamily,
+            color = AppColors.ColorTypography,
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(40.dp))
         Row (
@@ -82,7 +103,19 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                 onValueChange = {newEmail ->
                     email = newEmail
                 },
-                label = { Text("Correu electrònic") },
+                label = { Text(text = "Correu electrònic",
+                    fontSize = 20.sp,
+                    style = TextStyle(
+                        shadow = Shadow(
+                            color = Color.Black,
+                            offset = Offset(5f,5f),
+                            blurRadius = 10f
+                        )
+                    ),
+                    fontFamily = jerseyFontFamily,
+                    color = AppColors.ColorTypography,
+                    textAlign = TextAlign.Center
+                ) },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = AppColors.ColorTypography,
                     focusedBorderColor = AppColors.ColorTypography,
@@ -91,7 +124,9 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                     unfocusedTextColor = AppColors.ColorTypography,
                     focusedTextColor = AppColors.ColorTypography
                 ),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
 
             )
             IconButton(onClick = {

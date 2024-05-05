@@ -8,7 +8,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.ui.theme.Pink80
+import com.example.pescamines.ui.theme.jerseyFontFamily
 import com.example.pescamines.viewmodel.GameViewModel
 
 @Composable
@@ -32,8 +36,16 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
     Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center ) {
         Text(
             text = "Configuració del joc",
+            fontSize = 36.sp,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = Offset(5f,5f),
+                    blurRadius = 10f
+                )
+            ),
+            fontFamily = jerseyFontFamily,
             color = AppColors.ColorTypography,
-            fontSize = 24.sp,
             textAlign = TextAlign.Center
             )
         Spacer(modifier = Modifier.height(16.dp))
@@ -41,7 +53,18 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
 
             value = userName,
             onValueChange = { userName = it },
-            label = {Text("Nom de l\'usuari") },
+            label = {Text(text = "Nom de l\'usuari",
+                fontSize = 20.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f,5f),
+                        blurRadius = 10f
+                    )
+                ),
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = AppColors.ColorTypography,
                 focusedBorderColor = AppColors.ColorTypography,
@@ -56,7 +79,20 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
         OutlinedTextField(
             value = gridSize,
             onValueChange = { gridSize = it },
-            label = { Text("Mida") },
+            label = { Text(
+                text = "Mida",
+                fontSize = 20.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f,5f),
+                        blurRadius = 10f
+                    )
+                ),
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center
+                ) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = AppColors.ColorTypography,
                 focusedBorderColor = AppColors.ColorTypography,
@@ -72,7 +108,19 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
         OutlinedTextField(
             value = bombPercentage,
             onValueChange = { bombPercentage = it },
-            label = { Text("Percentatge de Bombes") },
+            label = { Text(text = "Percentatge de Bombes",
+                fontSize = 20.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f,5f),
+                        blurRadius = 10f
+                    )
+                ),
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center
+            ) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = AppColors.ColorTypography,
                 focusedBorderColor = AppColors.ColorTypography,
@@ -88,7 +136,17 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Temporizador ",
-                color = AppColors.ColorTypography
+                fontSize = 20.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f,5f),
+                        blurRadius = 10f
+                    )
+                ),
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center
             )
             Switch(
                 checked = timerEnabled,
@@ -119,7 +177,20 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
         ) {
 
             Icon(Icons.Filled.PlayArrow, tint = Color.White ,contentDescription = "Configurar el joc")
-            Text("Començar la partida")
+            Text(
+                text = "Començar la partida",
+                fontSize = 20.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f,5f),
+                        blurRadius = 10f
+                    )
+                ),
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center
+                )
         }
     }
 }
