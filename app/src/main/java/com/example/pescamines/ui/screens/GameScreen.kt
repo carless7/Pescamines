@@ -163,7 +163,7 @@ fun GameBoard(viewModel: GameViewModel) {
     BoxWithConstraints(modifier = Modifier
         .padding(16.dp)
         .fillMaxWidth()) {
-        val totalSpacerWidth = (boardSize - 1) * 4.dp  // Espacio total ocupado por Spacers
+        val totalSpacerWidth = (boardSize - 1) * 1.dp  // Espacio total ocupado por Spacers
         val gridSize = maxWidth - totalSpacerWidth     // Ajusta el tamaño máximo del tablero
         val cellSize = (gridSize / boardSize)   // Directamente dividiendo Dp por Int
 
