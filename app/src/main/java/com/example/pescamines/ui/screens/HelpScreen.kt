@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +26,14 @@ import com.example.pescamines.ui.theme.jerseyFontFamily
 
 @Composable
 fun HelpScreen(navController: NavController) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val fontSize = when {
+        screenWidth < 360 -> 48.sp
+        screenWidth < 480 -> 64.sp
+        screenWidth < 720 -> 72.sp
+        else -> 28.sp
+    }
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(top = 20.dp), horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.Top ) {
@@ -40,7 +49,7 @@ fun HelpScreen(navController: NavController) {
             Spacer(modifier = Modifier.padding(25.dp))
             Text(
                 text = "Com jugar",
-                fontSize = 56.sp,
+                fontSize = fontSize,
                 style = TextStyle(
                     shadow = Shadow(
                         color = Color.Black,

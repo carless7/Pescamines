@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import com.example.pescamines.ui.theme.*
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,6 +58,14 @@ fun HomeScreen(navController: NavController) {
             }
         }
     }
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val fontSize = when {
+        screenWidth < 360 -> 48.sp
+        screenWidth < 480 -> 64.sp
+        screenWidth < 720 -> 72.sp
+        else -> 28.sp
+    }
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center ) {
@@ -65,7 +74,7 @@ fun HomeScreen(navController: NavController) {
             .padding(horizontal = 20.dp), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = "PescaMines",
-                fontSize = 72.sp,
+                fontSize = fontSize,
                 style = TextStyle(
                     shadow = Shadow(
                         color = AppColors.SecondaryButton,
