@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -106,12 +105,18 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
             }
         }
     }
-    // Mostrar un diálogo cuando el juego finaliza
-    while(gameResult != GameResult.InProgress){
-        ShowResultDialog(gameResult, navController)
+    when(gameResult != GameResult.InProgress){
+        true -> {
+            navController.navigate("results")
+        }
+        false -> {}
     }
+    // Mostrar un diálogo cuando el juego finaliza
+    /*while(gameResult != GameResult.InProgress){
+        ShowResultDialog(gameResult, navController)
+    }*/
 }
-
+/*
 @Composable
 fun ShowResultDialog(gameResult: GameResult, navController: NavController) {
     if (gameResult != GameResult.InProgress) {
@@ -126,13 +131,15 @@ fun ShowResultDialog(gameResult: GameResult, navController: NavController) {
             }
         )
     }
-}
+}*/
 
 
 @Composable
 fun GameBoard(viewModel: GameViewModel) {
     val boardSize by viewModel.gridOption.collectAsState()
-    BoxWithConstraints(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
+    BoxWithConstraints(modifier = Modifier
+        .padding(16.dp)
+        .fillMaxWidth()) {
         val totalSpacerWidth = (boardSize - 1) * 4.dp  // Espacio total ocupado por Spacers
         val gridSize = maxWidth - totalSpacerWidth     // Ajusta el tamaño máximo del tablero
         val cellSize = (gridSize / boardSize)   // Directamente dividiendo Dp por Int
@@ -208,6 +215,7 @@ fun getNumberColor(number: Int): Color {
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Preview(showBackground = true)
 @Composable
 fun PreviewGameScreen() {

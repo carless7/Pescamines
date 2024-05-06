@@ -28,7 +28,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -56,10 +55,14 @@ import java.util.Date
 fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
     val activity = (LocalContext.current as? Activity)
     val context = LocalContext.current
+    val userName by viewModel.userName.collectAsState()
     val gameResult by viewModel.gameResult.collectAsState()
 
-    var email by remember { mutableStateOf(TextFieldValue(""))}
-    Column(modifier = Modifier.padding(50.dp)) {
+    val emailSend = remember {
+        mutableStateOf(TextFieldValue())
+    }
+
+    Column(modifier = Modifier.padding(50.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(25.dp))
         Text(
             text ="Resultat de la partida: $gameResult",
@@ -99,10 +102,8 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
             verticalAlignment = Alignment.CenterVertically
         ){
             OutlinedTextField(
-                value = email,
-                onValueChange = {newEmail ->
-                    email = newEmail
-                },
+                value = emailSend.value,
+                onValueChange = {emailSend.value = it},
                 label = { Text(text = "Correu electrònic",
                     fontSize = 20.sp,
                     style = TextStyle(
@@ -172,9 +173,10 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                 Column (horizontalAlignment = Alignment.CenterHorizontally) {
                     IconButton(onClick = {
                         val i = Intent(Intent.ACTION_SEND)
-                        val emailAddr = email.text
+                        val emailAddr = arrayOf(emailSend.value.text)
                         val emailSubj = "Partida $maildate"
-                        val emailBody = "Resultat ${viewModel.gameResult}"
+                        val emailBody = "Jugador: ${userName} \n Resultat: ${gameResult}"
+
                         i.putExtra(Intent.EXTRA_EMAIL, emailAddr)
                         i.putExtra(Intent.EXTRA_SUBJECT, emailSubj)
                         i.putExtra(Intent.EXTRA_TEXT, emailBody)
