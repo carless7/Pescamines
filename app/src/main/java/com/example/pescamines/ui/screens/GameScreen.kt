@@ -94,7 +94,7 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
                             Icons.Filled.Settings,
                             tint = AppColors.SecondaryButton,
                             contentDescription = "Configuració",
-                            modifier = Modifier.size(128.dp)
+                            modifier = Modifier.size(72.dp)
                         )
                     }
                 },
@@ -104,7 +104,7 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
                             Icons.Filled.Refresh,
                             tint = AppColors.SecondaryButton,
                             contentDescription = "Reiniciar partida",
-                            modifier = Modifier.size(128.dp)
+                            modifier = Modifier.size(72.dp)
                         )
                     }
                 },
