@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,13 +60,22 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     val totalBombs = calculateTotalBombs(gridValue, bombPercentage)
     val gameResult by viewModel.gameResult.collectAsState()
 
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val fontSize = when {
+        screenWidth < 360 -> 40.sp
+        screenWidth < 480 -> 50.sp
+        screenWidth < 720 -> 60.sp
+        else -> 28.sp
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "PescaMines",
-                        fontSize = 56.sp,
+                        fontSize = fontSize,
                         style = TextStyle(
                             shadow = Shadow(
                                 color = Color.Black,
