@@ -175,7 +175,7 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                         val i = Intent(Intent.ACTION_SEND)
                         val emailAddr = arrayOf(emailSend.value.text)
                         val emailSubj = "Partida $maildate"
-                        val emailBody = "Jugador: ${userName} \n Resultat: ${gameResult}"
+                        val emailBody = "Joc: PescaMines \n Jugador: $userName \n Resultat: $gameResult"
 
                         i.putExtra(Intent.EXTRA_EMAIL, emailAddr)
                         i.putExtra(Intent.EXTRA_SUBJECT, emailSubj)

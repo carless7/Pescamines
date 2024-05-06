@@ -2,15 +2,14 @@ package com.example.pescamines.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import com.example.pescamines.model.Board
 import com.example.pescamines.model.BombManager
 import com.example.pescamines.model.GameStatus
 import com.example.pescamines.model.NumberCalculator
-import com.example.pescamines.viewmodel.GameResult
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class GameViewModel : ViewModel() {
     // Configuración del juego
@@ -34,7 +33,7 @@ class GameViewModel : ViewModel() {
 
     // Inicializar el juego con la configuración actual
     private fun initializeGame() {
-        bombManager = BombManager((gridOption.value * gridOption.value * bombPercentage.value / 100).toInt())
+        bombManager = BombManager((gridOption.value * gridOption.value * bombPercentage.value / 100))
         numberCalculator = NumberCalculator()
         board = Board(gridOption.value)
         board.initialize(bombManager, numberCalculator)
