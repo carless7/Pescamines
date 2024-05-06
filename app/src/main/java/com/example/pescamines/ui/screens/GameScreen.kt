@@ -208,7 +208,6 @@ fun GameCell(viewModel: GameViewModel, x: Int, y: Int, cell: Cell, size: Dp) {
         Box(contentAlignment = Alignment.Center) {
             Text(
                 text = getCellLabel(cell),
-                fontSize = 20.sp,
                 color = if (cell.isRevealed && cell.bombsNearby > 0) getNumberColor(cell.bombsNearby) else Color.White
             )
         }
