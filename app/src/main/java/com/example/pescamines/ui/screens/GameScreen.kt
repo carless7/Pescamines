@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,20 +62,22 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(
-                    text = "PescaMines",
-                    fontSize = 56.sp,
-                    style = TextStyle(
-                        shadow = Shadow(
-                            color = Color.Black,
-                            offset = Offset(5f,5f),
-                            blurRadius = 10f
-                        )
-                    ),
-                    fontFamily = jerseyFontFamily,
-                    color = AppColors.ColorTypography,
-                    textAlign = TextAlign.Center
-                ) },
+                title = {
+                    Text(
+                        text = "PescaMines",
+                        fontSize = 56.sp,
+                        style = TextStyle(
+                            shadow = Shadow(
+                                color = Color.Black,
+                                offset = Offset(5f,5f),
+                                blurRadius = 10f
+                            )
+                        ),
+                        fontFamily = jerseyFontFamily,
+                        color = AppColors.ColorTypography,
+                        textAlign = TextAlign.Center
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -94,9 +97,16 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
                             modifier = Modifier.size(128.dp)
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = AppColors.Background,  // Define el color de fondo del AppBar
+                    titleContentColor = AppColors.ColorTypography,  // Define el color del texto del título
+                    actionIconContentColor = AppColors.SecondaryButton  // Define el color de los iconos de las acciones
+                )
             )
-        }
+
+        },
+        containerColor = AppColors.Background
     ) { padding ->
         Column(modifier = Modifier
             .padding(padding)
@@ -112,9 +122,9 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if(timeEnabled){
-                    Text("⌛: $timeRemaining s")
+                    Text("⌛: $timeRemaining s", color = AppColors.ColorTypography)
                 }
-                Text("\uD83D\uDCA3: $totalBombs ($bombPercentage%)")
+                Text("\uD83D\uDCA3: $totalBombs ($bombPercentage%)", color = AppColors.ColorTypography)
             }
         }
     }
@@ -188,14 +198,17 @@ fun GameCell(viewModel: GameViewModel, x: Int, y: Int, cell: Cell, size: Dp) {
                 onClick = { viewModel.onCellClicked(x, y) },
                 onLongClick = { viewModel.toggleFlag(x, y) }
             ),
-        color = if (cell.isRevealed)
-            if (cell.hasBomb) AppColors.Number8 else AppColors.UncoveredCells
-        else AppColors.CoveredCells,
+        color = if (cell.isRevealed) {
+            if (cell.hasBomb) {
+                AppColors.SecondaryButton
+            } else AppColors.UncoveredCells
+        } else AppColors.CoveredCells,
         contentColor = if (cell.isRevealed && cell.bombsNearby > 0) getNumberColor(cell.bombsNearby) else Color.White
     ) {
         Box(contentAlignment = Alignment.Center) {
             Text(
                 text = getCellLabel(cell),
+                fontSize = 20.sp,
                 color = if (cell.isRevealed && cell.bombsNearby > 0) getNumberColor(cell.bombsNearby) else Color.White
             )
         }
@@ -229,7 +242,7 @@ fun getNumberColor(number: Int): Color {
 }
 
 @SuppressLint("StateFlowValueCalledInComposition")
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun PreviewGameScreen() {
     PescaminesTheme {

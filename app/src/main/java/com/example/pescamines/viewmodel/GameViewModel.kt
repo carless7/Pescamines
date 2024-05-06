@@ -13,11 +13,11 @@ import kotlinx.coroutines.launch
 
 class GameViewModel : ViewModel() {
     // Configuración del juego
-    val userName = MutableStateFlow("")
-    val gridOption = MutableStateFlow(6)  // Tamaño del grid por defecto
-    val timerEnabled = MutableStateFlow(false)
-    val bombPercentage = MutableStateFlow(15)  // Porcentaje de bombas por defecto
-    val timeRemaining = MutableStateFlow(120)  // Temporizador en segundos
+    val userName = MutableStateFlow("Jugador")
+    val gridOption = MutableStateFlow(10)  // Tamaño del grid por defecto
+    val timerEnabled = MutableStateFlow(true)
+    val bombPercentage = MutableStateFlow(10)  // Porcentaje de bombas por defecto
+    val timeRemaining = MutableStateFlow(240)  // Temporizador en segundos
     var gameResult = MutableStateFlow(GameResult.InProgress)
 
     // Referencias al modelo de datos del juego
@@ -58,7 +58,7 @@ class GameViewModel : ViewModel() {
     fun toggleFlag(x: Int, y: Int) {
         if (!board.cells[y][x].isRevealed) {  // Solo se puede marcar/desmarcar celdas no reveladas
             board.toggleFlag(x, y)
-            val status = board.checkGameStatus()  // Si tu juego evalúa ganar con banderas correctas, de lo contrario, omite esto
+            val status = board.checkGameStatus()
             updateGameResult(status)
             if (status != GameStatus.InProgress) {
                 endGame(status)
@@ -69,7 +69,7 @@ class GameViewModel : ViewModel() {
         when(status) {
             GameStatus.Won -> gameResult.value = GameResult.Won
             GameStatus.Lost -> gameResult.value = GameResult.LostByBomb
-            else -> {} // No actualización necesaria
+            else -> {}
         }
     }
 
@@ -122,7 +122,7 @@ class GameViewModel : ViewModel() {
 
     // Reiniciar el juego
     fun resetGame() {
-        timeRemaining.value = 120
+        timeRemaining.value = 240
         stopTimer()
         initializeGame()
     }

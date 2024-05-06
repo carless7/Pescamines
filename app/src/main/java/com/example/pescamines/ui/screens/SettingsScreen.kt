@@ -153,8 +153,8 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
                 onCheckedChange = { timerEnabled = it },
                 colors  = SwitchDefaults.colors(
                     checkedThumbColor = Color.Blue,
-                    checkedTrackColor = AppColors.MainButton,
-                    uncheckedThumbColor = AppColors.SecondaryButton,
+                    checkedTrackColor = AppColors.SecondaryButton,
+                    uncheckedThumbColor = AppColors.UncoveredCells,
                     uncheckedTrackColor= Pink80,
                 ),
             )

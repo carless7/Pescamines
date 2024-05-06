@@ -28,7 +28,7 @@ class Board(private val width: Int) {
     }
 
     fun toggleFlag(x: Int, y: Int) {
-        if (!cells[y][x].isRevealed) {  // Solo se puede marcar/desmarcar celdas no reveladas
+        if (!cells[y][x].isRevealed) {
             cells[y][x].isFlagged = !cells[y][x].isFlagged
         }
     }
@@ -38,7 +38,7 @@ class Board(private val width: Int) {
         for (row in cells) {
             for (cell in row) {
                 if (cell.hasBomb && cell.isRevealed) {
-                    return GameStatus.Lost  // El jugador reveló una bomba
+                    return GameStatus.Lost
                 }
                 if (!cell.hasBomb && !cell.isRevealed) {
                     allSafeCellsRevealed = false
