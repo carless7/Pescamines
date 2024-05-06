@@ -109,6 +109,7 @@ class GameViewModel : ViewModel() {
     }
     // Actualizar configuraciones y reiniciar el juego
     fun updateSettings(name: String, grid: Int, timer: Boolean, percentage: Int) {
+        //pending to handle this situations, meanwhile we'll just close the app to not broke the game
         if (grid < 5 || grid > 30) throw IllegalArgumentException("Grid size must be between 5 and 30")
         if (percentage <= 0 || percentage >= 100) throw IllegalArgumentException("Bomb percentage must be between 1 and 99")
 
