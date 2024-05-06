@@ -18,7 +18,7 @@ class GameViewModel : ViewModel() {
     val timerEnabled = MutableStateFlow(false)
     val bombPercentage = MutableStateFlow(15)  // Porcentaje de bombas por defecto
     val timeRemaining = MutableStateFlow(120)  // Temporizador en segundos
-    val gameResult = MutableStateFlow(GameResult.InProgress)
+    var gameResult = MutableStateFlow(GameResult.InProgress)
 
     // Referencias al modelo de datos del juego
     lateinit var board: Board
@@ -40,6 +40,7 @@ class GameViewModel : ViewModel() {
         if (timerEnabled.value) {
             startTimer()
         }
+        gameResult = MutableStateFlow(GameResult.InProgress)
     }
 
     // Manejar clics en las celdas
