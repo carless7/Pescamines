@@ -50,7 +50,6 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
             )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
-
             value = userName,
             onValueChange = { userName = it },
             label = {Text(text = "Nom de l\'usuari",
@@ -78,7 +77,12 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = gridSize,
-            onValueChange = { gridSize = it },
+            onValueChange = {
+                val input = it.toIntOrNull()
+                if (input != null && input > 5 && input < 30) {
+                    gridSize = it
+                }
+            },
             label = { Text(
                 text = "Mida",
                 fontSize = 20.sp,
@@ -107,7 +111,12 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = bombPercentage,
-            onValueChange = { bombPercentage = it },
+            onValueChange = {
+                val input = it.toIntOrNull()
+                if (input != null && input > 1 && input < 99) {
+                    bombPercentage = it
+                }
+            },
             label = { Text(text = "Percentatge de Bombes",
                 fontSize = 20.sp,
                 style = TextStyle(
