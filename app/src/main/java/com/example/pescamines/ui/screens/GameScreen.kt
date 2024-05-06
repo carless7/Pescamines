@@ -77,12 +77,22 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
                 ) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Filled.Settings, contentDescription = "Configuració")
+                        Icon(
+                            Icons.Filled.Settings,
+                            tint = AppColors.SecondaryButton,
+                            contentDescription = "Configuració",
+                            modifier = Modifier.size(128.dp)
+                        )
                     }
                 },
                 actions = {
                     IconButton(onClick = { viewModel.resetGame() }) {
-                        Icon(Icons.Filled.Refresh, contentDescription = "Reiniciar partida")
+                        Icon(
+                            Icons.Filled.Refresh,
+                            tint = AppColors.SecondaryButton,
+                            contentDescription = "Reiniciar partida",
+                            modifier = Modifier.size(128.dp)
+                        )
                     }
                 }
             )
@@ -94,14 +104,17 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
             Spacer(modifier = Modifier.height(60.dp))
             GameBoard(viewModel)
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+                ,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if(timeEnabled){
-                    Text("Tiempo restante: $timeRemaining s")
+                    Text("⌛: $timeRemaining s")
                 }
-                Text("Bombas: $totalBombs ($bombPercentage%)")
+                Text("\uD83D\uDCA3: $totalBombs ($bombPercentage%)")
             }
         }
     }
