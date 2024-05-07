@@ -3,7 +3,6 @@ package com.example.pescamines.ui.theme
 import androidx.compose.ui.graphics.Color
 object AppColors{
     val Background = Color(0xFF212930)
-    val MainButton = Color(0xFF5299D3)
     val SecondaryButton = Color(0xFFD63230)
     val ColorTypography = Color(0xFFFCFCFC)
     val CoveredCells = Color(0xFF3D4243)
