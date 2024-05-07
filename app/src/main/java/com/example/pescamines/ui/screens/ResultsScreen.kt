@@ -57,6 +57,11 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
     val context = LocalContext.current
     val userName by viewModel.userName.collectAsState()
     val gameResult by viewModel.gameResult.collectAsState()
+    val temporitzadot by viewModel.timerEnabled.collectAsState()
+    val remainingTime by viewModel.timeRemaining.collectAsState()
+    val gridSize by viewModel.gridOption.collectAsState()
+    val bombPercentage by viewModel.bombPercentage.collectAsState()
+
 
     val emailSend = remember {
         mutableStateOf(TextFieldValue())
@@ -175,7 +180,13 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                         val i = Intent(Intent.ACTION_SEND)
                         val emailAddr = arrayOf(emailSend.value.text)
                         val emailSubj = "Partida $maildate"
-                        val emailBody = "Joc: PescaMines \n Jugador: $userName \n Resultat: $gameResult"
+                        val emailBody = "Joc: PescaMines \n" +
+                                "Jugador: $userName \n" +
+                                "Resultat: $gameResult\n" +
+                                "Temporitzador: $temporitzadot \n" +
+                                "Temps restant: $remainingTime \n" +
+                                "Tamany graella: $gridSize \n" +
+                                "Percentatge de bombes: $bombPercentage"
 
                         i.putExtra(Intent.EXTRA_EMAIL, emailAddr)
                         i.putExtra(Intent.EXTRA_SUBJECT, emailSubj)

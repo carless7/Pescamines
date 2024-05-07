@@ -1,11 +1,28 @@
 package com.example.pescamines.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -22,7 +39,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
-import com.example.pescamines.ui.theme.Pink80
 import com.example.pescamines.ui.theme.jerseyFontFamily
 import com.example.pescamines.viewmodel.GameViewModel
 
@@ -152,10 +168,13 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
                 checked = timerEnabled,
                 onCheckedChange = { timerEnabled = it },
                 colors  = SwitchDefaults.colors(
-                    checkedThumbColor = Color.Blue,
-                    checkedTrackColor = AppColors.SecondaryButton,
-                    uncheckedThumbColor = AppColors.UncoveredCells,
-                    uncheckedTrackColor= Pink80,
+                    checkedThumbColor = AppColors.Background,
+                    checkedTrackColor = AppColors.ColorTypography,
+                    checkedBorderColor = AppColors.ColorTypography,
+                    uncheckedThumbColor = Color.Gray,
+                    uncheckedTrackColor= AppColors.ColorTypography,
+                    uncheckedBorderColor = AppColors.ColorTypography
+
                 ),
             )
         }
@@ -195,7 +214,7 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun PreviewSettingsScreen() {
     PescaminesTheme {
