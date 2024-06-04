@@ -21,17 +21,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import com.example.pescamines.ui.theme.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.ui.theme.PescaminesTheme
+import com.example.pescamines.viewmodel.GameViewModel
 import kotlin.system.exitProcess
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: GameViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -128,7 +128,10 @@ fun HomeScreen(navController: NavController) {
                 )
             }
             Button(
-                onClick = { navController.navigate("game") },
+                onClick = {
+                    viewModel.initializeGame()
+                    navController.navigate("game")
+                          },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AppColors.SecondaryButton,
                     contentColor = Color.White
@@ -164,6 +167,7 @@ fun HomeScreen(navController: NavController) {
 fun PreviewHomeScreen() {
     PescaminesTheme {
         val mockNavController = rememberNavController()
-        HomeScreen(navController = mockNavController)
+        val gameViewModel = GameViewModel()
+        HomeScreen(navController = mockNavController, viewModel = gameViewModel)
     }
 }

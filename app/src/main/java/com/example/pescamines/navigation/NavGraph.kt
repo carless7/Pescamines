@@ -20,7 +20,7 @@ fun AppNavigation() {
 
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            HomeScreen(navController)
+            HomeScreen(navController, gameViewModel)
         }
         composable("help") {
             HelpScreen(navController)
