@@ -11,10 +11,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
+
 class GameViewModel : ViewModel() {
     // Configuración del juego
-    val userName = MutableStateFlow("Jugador")
-    val gridOption = MutableStateFlow(10)  // Tamaño del grid por defecto
+    val userName = MutableStateFlow("Aitana Bonmatí")
+    val gridOption = MutableStateFlow(8)  // Tamaño del grid por defecto
     val timerEnabled = MutableStateFlow(true)
     val bombPercentage = MutableStateFlow(10)  // Porcentaje de bombas por defecto
     val timeRemaining = MutableStateFlow(240)  // Temporizador en segundos
@@ -109,10 +110,6 @@ class GameViewModel : ViewModel() {
     }
     // Actualizar configuraciones y reiniciar el juego
     fun updateSettings(name: String, grid: Int, timer: Boolean, percentage: Int) {
-        //pending to handle this situations, meanwhile we'll just close the app to not broke the game
-        if (grid < 5 || grid > 30) throw IllegalArgumentException("Grid size must be between 5 and 30")
-        if (percentage <= 0 || percentage >= 100) throw IllegalArgumentException("Bomb percentage must be between 1 and 99")
-
         userName.value = name
         gridOption.value = grid
         timerEnabled.value = timer
@@ -131,5 +128,4 @@ class GameViewModel : ViewModel() {
         super.onCleared()
         stopTimer()  // Limpiar el temporizador cuando el ViewModel se destruya
     }
-
 }
