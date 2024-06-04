@@ -1,33 +1,14 @@
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -54,6 +35,10 @@ import com.example.pescamines.viewmodel.GameViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(navController: NavController, viewModel: GameViewModel) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val isTablet = screenWidth >= 600.dp  // Defineix el límit per a considerar el dispositiu com a tablet
+
     val timeRemaining by viewModel.timeRemaining.collectAsState()
     val bombPercentage by viewModel.bombPercentage.collectAsState()
     val gridValue by viewModel.gridOption.collectAsState()
@@ -61,134 +46,161 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     val totalBombs = calculateTotalBombs(gridValue, bombPercentage)
     val gameResult by viewModel.gameResult.collectAsState()
 
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp
-    val fontSize = when {
-        screenWidth < 360 -> 40.sp
-        screenWidth < 480 -> 50.sp
-        screenWidth < 720 -> 60.sp
-        else -> 28.sp
-    }
+    val eventLog = remember { mutableStateListOf<String>() } // Llista d'esdeveniments
 
     Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "PescaMines",
-                        fontSize = fontSize,
-                        style = TextStyle(
-                            shadow = Shadow(
-                                color = Color.Black,
-                                offset = Offset(5f,5f),
-                                blurRadius = 10f
-                            )
-                        ),
-                        fontFamily = jerseyFontFamily,
-                        color = AppColors.ColorTypography,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack()} ) {
-                        Icon(
-                            Icons.Filled.ArrowBack,
-                            tint = AppColors.SecondaryButton,
-                            contentDescription = "Back",
-                            modifier = Modifier.size(128.dp)
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { viewModel.resetGame() }) {
-                        Icon(
-                            Icons.Filled.Refresh,
-                            tint = AppColors.SecondaryButton,
-                            contentDescription = "Reiniciar partida",
-                            modifier = Modifier.size(72.dp)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = AppColors.Background,  // Define el color de fondo del AppBar
-                    titleContentColor = AppColors.ColorTypography,  // Define el color del texto del título
-                    actionIconContentColor = AppColors.SecondaryButton  // Define el color de los iconos de las acciones
-                )
-            )
-
-        },
+        topBar = { GameTopBar(navController, viewModel) },
         containerColor = AppColors.Background
     ) { padding ->
-        Column(modifier = Modifier
-            .padding(padding)
-            .fillMaxSize()) {
-            Spacer(modifier = Modifier.height(60.dp))
-            GameBoard(viewModel)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp)
-                ,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if(timeEnabled){
-                    Text("⌛: $timeRemaining s", color = AppColors.ColorTypography)
-                }
-                Text("\uD83D\uDCA3: $totalBombs ($bombPercentage%)", color = AppColors.ColorTypography)
+        BoxWithConstraints(
+            modifier = Modifier.padding(padding)
+        ) {
+            val constraints = this.constraints
+            if (constraints.maxWidth > constraints.maxHeight) {
+                // Landscape layout
+                LandscapeLayout(isTablet, viewModel, timeRemaining, totalBombs, bombPercentage, timeEnabled, eventLog)
+            } else {
+                // Portrait layout
+                PortraitLayout(isTablet, viewModel, timeRemaining, totalBombs, bombPercentage, timeEnabled, eventLog)
+            }
+        }
+
+        // Gestió de l'estat del joc
+        LaunchedEffect(gameResult) {
+            if (gameResult != GameResult.InProgress) {
+                navController.navigate("results")
             }
         }
     }
-    when(gameResult != GameResult.InProgress){
-        true -> {
-            navController.navigate("results")
-        }
-        false -> {}
-    }
-    // Mostrar un diálogo cuando el juego finaliza
-    /*while(gameResult != GameResult.InProgress){
-        ShowResultDialog(gameResult, navController)
-    }*/
 }
-/*
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShowResultDialog(gameResult: GameResult, navController: NavController) {
-    if (gameResult != GameResult.InProgress) {
-        AlertDialog(
-            onDismissRequest = { /* No hacer nada al descartar */ },
-            title = { Text("S'ha acabat el joc!") },
-            text = { Text("Resultat: $gameResult") },
-            confirmButton = {
-                Button(onClick = { navController.navigate("results") }) {
-                    Text("Veure resultats")
-                }
+fun GameTopBar(navController: NavController, viewModel: GameViewModel) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = "PescaMines",
+                fontSize = 48.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = AppColors.SecondaryButton,
+                        offset = Offset(5f, 5f),
+                        blurRadius = 10f
+                    )
+                ),
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    tint = AppColors.SecondaryButton,
+                    contentDescription = "Back"
+                )
             }
+        },
+        actions = {
+            IconButton(onClick = { viewModel.resetGame() }) {
+                Icon(
+                    Icons.Filled.Refresh,
+                    tint = AppColors.SecondaryButton,
+                    contentDescription = "Reiniciar partida"
+                )
+            }
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = AppColors.Background,
+            titleContentColor = AppColors.ColorTypography,
+            actionIconContentColor = AppColors.SecondaryButton
         )
-    }
-}*/
-
+    )
+}
 
 @Composable
-fun GameBoard(viewModel: GameViewModel) {
+fun LandscapeLayout(
+    isTablet: Boolean,
+    viewModel: GameViewModel,
+    timeRemaining: Int,
+    totalBombs: Int,
+    bombPercentage: Int,
+    timeEnabled: Boolean,
+    eventLog: MutableList<String>
+) {
+    Row(modifier = Modifier.fillMaxSize()) {
+        if (isTablet) {
+            // Tablet bi-panel: game on the left, events on the right
+            Column(modifier = Modifier.weight(1f)) {
+                GameBoard(viewModel, eventLog)
+                GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                EventLog(eventLog)
+            }
+
+        } else {
+            // Smartphone: only the game board
+            Column(modifier = Modifier.fillMaxWidth()) {
+                GameBoard(viewModel, eventLog)
+                GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
+            }
+        }
+    }
+}
+
+@Composable
+fun PortraitLayout(
+    isTablet: Boolean,
+    viewModel: GameViewModel,
+    timeRemaining: Int,
+    totalBombs: Int,
+    bombPercentage: Int,
+    timeEnabled: Boolean,
+    eventLog: MutableList<String>
+) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        if (isTablet) {
+            // Tablet bi-panel: events on top, game on bottom
+            GameBoard(viewModel, eventLog, Modifier.weight(1f))
+            GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
+            EventLog(eventLog, Modifier.weight(1f))
+        } else {
+            // Smartphone: only the game board
+            GameBoard(viewModel, eventLog)
+            GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
+        }
+    }
+}
+
+@Composable
+fun GameBoard(viewModel: GameViewModel, eventLog: MutableList<String>, modifier: Modifier = Modifier) {
     val boardSize by viewModel.gridOption.collectAsState()
-    BoxWithConstraints(modifier = Modifier
+    val timeRemaining by viewModel.timeRemaining.collectAsState()
+
+    BoxWithConstraints(modifier = modifier
         .padding(16.dp)
-        .fillMaxWidth()) {
-        val totalSpacerWidth = (boardSize - 1) * 1.dp  // Espacio total ocupado por Spacers
-        val gridSize = maxWidth - totalSpacerWidth     // Ajusta el tamaño máximo del tablero
-        val cellSize = (gridSize / boardSize)   // Directamente dividiendo Dp por Int
+        .verticalScroll(rememberScrollState())) {
+        val totalSpacerWidth = (boardSize - 1) * 1.dp
+        val gridSize = maxWidth - totalSpacerWidth
+        val cellSize = (gridSize / boardSize)
 
         Column {
             for (y in 0 until boardSize) {
                 Row {
                     for (x in 0 until boardSize) {
-                        GameCell(viewModel, x, y, viewModel.board.cells[y][x], cellSize)
+                        GameCell(viewModel, x, y, viewModel.board.cells[y][x], cellSize) {
+                            // Afegir esdeveniment al log
+                            eventLog.add("Casella seleccionada: ($x, $y) amb $timeRemaining segons restants")
+                        }
                         if (x < boardSize - 1) {
-                            Spacer(modifier = Modifier.width(1.dp))  // Agrega espaciadores entre las casillas, excepto después de la última
+                            Spacer(modifier = Modifier.width(1.dp))
                         }
                     }
                     if (y < boardSize - 1) {
-                        Spacer(modifier = Modifier.height(4.dp))  // Agrega espaciadores entre las filas, excepto después de la última
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
                 }
             }
@@ -196,17 +208,18 @@ fun GameBoard(viewModel: GameViewModel) {
     }
 }
 
-
-
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun GameCell(viewModel: GameViewModel, x: Int, y: Int, cell: Cell, size: Dp) {
+fun GameCell(viewModel: GameViewModel, x: Int, y: Int, cell: Cell, size: Dp, onClick: () -> Unit) {
     Surface(
         modifier = Modifier
             .size(size)
             .padding(1.dp)
             .combinedClickable(
-                onClick = { viewModel.onCellClicked(x, y) },
+                onClick = {
+                    viewModel.onCellClicked(x, y)
+                    onClick()
+                },
                 onLongClick = { viewModel.toggleFlag(x, y) }
             ),
         color = if (cell.isRevealed) {
@@ -219,8 +232,41 @@ fun GameCell(viewModel: GameViewModel, x: Int, y: Int, cell: Cell, size: Dp) {
         Box(contentAlignment = Alignment.Center) {
             Text(
                 text = getCellLabel(cell),
-                color = if (cell.isRevealed && cell.bombsNearby > 0) getNumberColor(cell.bombsNearby) else Color.White
+                color = if (cell.isRevealed && cell.bombsNearby > 0) getNumberColor(cell.bombsNearby) else Color.White,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f, 5f),
+                        blurRadius = 10f
+                    )
+                )
             )
+        }
+    }
+}
+
+@Composable
+fun GameStatus(timeRemaining: Int, totalBombs: Int, bombPercentage: Int, timeEnabled: Boolean) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (timeEnabled) {
+            Text("⌛: $timeRemaining s", color = AppColors.ColorTypography)
+        }
+        Text("\uD83D\uDCA3: $totalBombs ($bombPercentage%)", color = AppColors.ColorTypography)
+    }
+}
+
+@Composable
+fun EventLog(eventLog: List<String>, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.padding(16.dp)) {
+        Text("Event Log:", style = TextStyle(fontSize = 20.sp, color = AppColors.ColorTypography))
+        eventLog.forEach { event ->
+            Text(event, style = TextStyle(fontSize = 16.sp, color = AppColors.ColorTypography))
         }
     }
 }
@@ -261,6 +307,3 @@ fun PreviewGameScreen() {
         GameScreen(navController = mockNavController, viewModel = gameViewModel)
     }
 }
-
-
-
