@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class GameViewModel : ViewModel() {
     // Configuración del juego
     val userName = MutableStateFlow("Aitana Bonmatí")
-    val gridOption = MutableStateFlow(9)  // Tamaño del grid por defecto
+    val gridOption = MutableStateFlow(8)  // Tamaño del grid por defecto
     val timerEnabled = MutableStateFlow(true)
     val bombPercentage = MutableStateFlow(10)  // Porcentaje de bombas por defecto
     val timeRemaining = MutableStateFlow(240)  // Temporizador en segundos

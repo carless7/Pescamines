@@ -48,8 +48,8 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
     var gridSize by remember { mutableStateOf(viewModel.gridOption.value.toString()) }
     var bombPercentage by remember { mutableStateOf(viewModel.bombPercentage.value.toString()) }
     var timerEnabled by remember { mutableStateOf(viewModel.timerEnabled.value) }
-    val gridSizeOptions = listOf("9", "12", "15")
-    val bombPercentageOptions = listOf("10", "20", "30")
+    val gridSizeOptions = listOf("6", "8", "10", "12")
+    val bombPercentageOptions = listOf("10", "15", "20", "25")
 
     Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center ) {
         Text(
