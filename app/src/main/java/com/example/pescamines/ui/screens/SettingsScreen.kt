@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -224,16 +227,15 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
                     timerEnabled,
                     bombOption
                 )
-                navController.navigate("game")
+                navController.popBackStack()
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = AppColors.SecondaryButton,
                 contentColor = Color.White
             )
         ) {
-            Icon(Icons.Filled.PlayArrow, tint = Color.White ,contentDescription = "Configurar el joc")
             Text(
-                text = "Començar la partida",
+                text = " Guardar configuració",
                 fontSize = 20.sp,
                 style = TextStyle(
                     shadow = Shadow(

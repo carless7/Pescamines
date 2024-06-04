@@ -33,7 +33,7 @@ class GameViewModel : ViewModel() {
     }
 
     // Inicializar el juego con la configuración actual
-    private fun initializeGame() {
+    fun initializeGame() {
         bombManager = BombManager((gridOption.value * gridOption.value * bombPercentage.value / 100))
         numberCalculator = NumberCalculator()
         board = Board(gridOption.value)

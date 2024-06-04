@@ -16,8 +16,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -49,11 +51,11 @@ import com.example.pescamines.ui.theme.jerseyFontFamily
 import com.example.pescamines.viewmodel.GameViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.system.exitProcess
 
 
 @Composable
 fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
-    val activity = (LocalContext.current as? Activity)
     val context = LocalContext.current
     val userName by viewModel.userName.collectAsState()
     val gameResult by viewModel.gameResult.collectAsState()
@@ -106,6 +108,17 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
         Row (
             verticalAlignment = Alignment.CenterVertically
         ){
+            IconButton(onClick = {
+                Toast.makeText(context, "Introdueix una adreça on enviar el resultat", Toast.LENGTH_SHORT).show()
+            }) {
+                Icon(
+                    Icons.Filled.Info,
+                    tint = AppColors.SecondaryButton,
+                    contentDescription = "Mail_hint",
+                    modifier = Modifier
+                        .size(32.dp)
+                )
+            }
             OutlinedTextField(
                 value = emailSend.value,
                 onValueChange = {emailSend.value = it},
@@ -135,16 +148,33 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
 
             )
-            IconButton(onClick = {
-                Toast.makeText(context, "Correu a on enviar el resultat", Toast.LENGTH_SHORT).show()
-            }) {
-                Icon(
-                    Icons.Filled.Info,
-                    tint = AppColors.SecondaryButton,
-                    contentDescription = "Mail_hint",
-                    modifier = Modifier
-                        .size(40.dp)
-                )
+            Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                IconButton(onClick = {
+                    val i = Intent(Intent.ACTION_SEND)
+                    val emailAddr = arrayOf(emailSend.value.text)
+                    val emailSubj = "Partida $maildate"
+                    val emailBody = "Joc: PescaMines \n" +
+                            "Jugador: $userName \n" +
+                            "Resultat: $gameResult\n" +
+                            "Temporitzador: $temporitzador \n" +
+                            "Temps restant: $remainingTime \n" +
+                            "Tamany graella: $gridSize \n" +
+                            "Percentatge de bombes: $bombPercentage"
+
+                    i.putExtra(Intent.EXTRA_EMAIL, emailAddr)
+                    i.putExtra(Intent.EXTRA_SUBJECT, emailSubj)
+                    i.putExtra(Intent.EXTRA_TEXT, emailBody)
+
+                    i.setType("message/rfc822")
+                    context.startActivity(i)
+                }) {
+                    Icon(
+                        Icons.Filled.Email,
+                        tint = AppColors.SecondaryButton,
+                        contentDescription = "send",
+                        modifier = Modifier.size(128.dp)
+                    )
+                }
             }
         }
         Column (modifier = Modifier
@@ -154,7 +184,7 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                 Column (horizontalAlignment = Alignment.CenterHorizontally) {
-                    IconButton(onClick = { activity?.finish() }) {
+                    IconButton(onClick = { exitProcess(0) }) {
                         Icon(
                             Icons.Filled.ExitToApp,
                             tint = AppColors.SecondaryButton,
@@ -164,42 +194,25 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
                     }
                 }
                 Column (horizontalAlignment = Alignment.CenterHorizontally) {
-                    IconButton(onClick = { navController.popBackStack("settings", inclusive = false) }) {
+                    IconButton(onClick = { navController.navigate("home") }) {
                         Icon(
-                            Icons.Filled.Refresh,
+                            Icons.Filled.Home,
                             tint = AppColors.SecondaryButton,
-                            contentDescription = "play_again",
+                            contentDescription = "home",
                             modifier = Modifier.size(128.dp),
 
                         )
                     }
                 }
                 Column (horizontalAlignment = Alignment.CenterHorizontally) {
-                    IconButton(onClick = {
-                        val i = Intent(Intent.ACTION_SEND)
-                        val emailAddr = arrayOf(emailSend.value.text)
-                        val emailSubj = "Partida $maildate"
-                        val emailBody = "Joc: PescaMines \n" +
-                                "Jugador: $userName \n" +
-                                "Resultat: $gameResult\n" +
-                                "Temporitzador: $temporitzador \n" +
-                                "Temps restant: $remainingTime \n" +
-                                "Tamany graella: $gridSize \n" +
-                                "Percentatge de bombes: $bombPercentage"
-
-                        i.putExtra(Intent.EXTRA_EMAIL, emailAddr)
-                        i.putExtra(Intent.EXTRA_SUBJECT, emailSubj)
-                        i.putExtra(Intent.EXTRA_TEXT, emailBody)
-
-                        i.setType("message/rfc822")
-                        context.startActivity(i)
-                    }) {
+                    IconButton(onClick = { navController.navigate("settings") }) {
                         Icon(
-                            Icons.Filled.Email,
+                            Icons.Filled.Settings,
                             tint = AppColors.SecondaryButton,
-                            contentDescription = "send",
-                            modifier = Modifier.size(128.dp)
-                        )
+                            contentDescription = "settings",
+                            modifier = Modifier.size(128.dp),
+
+                            )
                     }
                 }
             }

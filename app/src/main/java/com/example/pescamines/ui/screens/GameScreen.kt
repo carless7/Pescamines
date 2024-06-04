@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -89,12 +90,12 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = { navController.popBackStack()} ) {
                         Icon(
-                            Icons.Filled.Settings,
+                            Icons.Filled.ArrowBack,
                             tint = AppColors.SecondaryButton,
-                            contentDescription = "Configuració",
-                            modifier = Modifier.size(72.dp)
+                            contentDescription = "Back",
+                            modifier = Modifier.size(128.dp)
                         )
                     }
                 },
