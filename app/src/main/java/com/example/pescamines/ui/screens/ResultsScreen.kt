@@ -70,8 +70,8 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
     Column(modifier = Modifier.padding(50.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(25.dp))
         Text(
-            text ="Resultat de la partida: $gameResult",
-            fontSize = 20.sp,
+            text ="Resultat de la partida: \n $gameResult",
+            fontSize = 40.sp,
             style = TextStyle(
                 shadow = Shadow(
                     color = Color.Black,
@@ -83,14 +83,14 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
             color = AppColors.ColorTypography,
             textAlign = TextAlign.Center
             )
-        Spacer(modifier = Modifier.height(16.dp))
-        val sdf = SimpleDateFormat("'Data de la partida:\n'dd-MM-yyyy '\nHora de la partida:\n'HH:mm:ss z")
+        Spacer(modifier = Modifier.height(70.dp))
+        val sdf = SimpleDateFormat("'Data de la partida:\n'dd-MM-yyyy '\n\nHora de la partida:\n'HH:mm:ss z")
         val maildateformat = SimpleDateFormat("dd-MM-yyyy / HH:mm:ss z")
         val currentDateAndTime = sdf.format(Date())
         val maildate = maildateformat.format(Date())
         Text(
             text = currentDateAndTime,
-            fontSize = 20.sp,
+            fontSize = 25.sp,
             style = TextStyle(
                 shadow = Shadow(
                     color = Color.Black,
@@ -102,7 +102,7 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
             color = AppColors.ColorTypography,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(70.dp))
         Row (
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -173,7 +173,6 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
 
                         )
                     }
-
                 }
                 Column (horizontalAlignment = Alignment.CenterHorizontally) {
                     IconButton(onClick = {
