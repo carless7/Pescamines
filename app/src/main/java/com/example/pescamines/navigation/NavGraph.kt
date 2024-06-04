@@ -34,5 +34,8 @@ fun AppNavigation() {
         composable("results") {
             ResultsScreen(navController, gameViewModel)
         }
+        composable("history") {
+            ResultsScreen(navController, gameViewModel)
+        }
     }
 }
