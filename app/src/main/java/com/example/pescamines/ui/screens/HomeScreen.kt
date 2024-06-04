@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import com.example.pescamines.ui.theme.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,7 +65,7 @@ fun HomeScreen(navController: NavController) {
         screenWidth < 360 -> 48.sp
         screenWidth < 480 -> 64.sp
         screenWidth < 720 -> 72.sp
-        else -> 28.sp
+        else -> 90.sp
     }
     Column(modifier = Modifier
         .fillMaxSize()
@@ -90,14 +91,29 @@ fun HomeScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(50.dp))
         Button(
-            onClick = { navController.navigate("settings") },
+            onClick = {
+                navController.navigate("settings")
+            },
             colors = ButtonDefaults.buttonColors(
-                containerColor = AppColors.SecondaryButton, // Color de fondo del botón
-                contentColor = Color.White // Color del texto y del icono
-            ),
-            modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                containerColor = AppColors.SecondaryButton,
+                contentColor = Color.White
+            )
+        ) {
             Icon(Icons.Filled.PlayArrow, tint = Color.White ,contentDescription = "Configurar el joc")
-            Text("Començar una partida")
+            Text(
+                text = "Començar la partida",
+                fontSize = 20.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(5f,5f),
+                        blurRadius = 10f
+                    )
+                ),
+                fontFamily = jerseyFontFamily,
+                color = AppColors.ColorTypography,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
