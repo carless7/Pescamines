@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -36,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.pescamines.data.MockGameDao
+import com.example.pescamines.data.MockUserPreferencesRepository
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.ui.theme.jerseyFontFamily
@@ -251,9 +254,13 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
 @Preview(showBackground = false)
 @Composable
 fun PreviewSettingsScreen() {
+    val context = LocalContext.current
+    val mockNavController = rememberNavController()
+    val mockGameDao = MockGameDao()
+    val mockUserPreferencesRepository = MockUserPreferencesRepository(context)
+    val gameViewModel = GameViewModel(mockGameDao, mockUserPreferencesRepository)
+
     PescaminesTheme {
-        val mockNavController = rememberNavController()
-        val gameViewModel = GameViewModel()
         SettingsScreen(navController = mockNavController, viewModel = gameViewModel)
     }
 }

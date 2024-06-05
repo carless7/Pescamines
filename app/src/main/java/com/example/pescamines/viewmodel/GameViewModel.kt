@@ -2,23 +2,30 @@ package com.example.pescamines.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pescamines.data.GameDao
+import com.example.pescamines.data.UserPreferencesRepository
 import com.example.pescamines.model.Board
 import com.example.pescamines.model.BombManager
+import com.example.pescamines.model.GameRecord
 import com.example.pescamines.model.GameStatus
 import com.example.pescamines.model.NumberCalculator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-
-class GameViewModel : ViewModel() {
+class GameViewModel(
+    private val gameDao: GameDao,
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModel() {
     // Configuración del juego
-    val userName = MutableStateFlow("Aitana Bonmatí")
-    val gridOption = MutableStateFlow(8)  // Tamaño del grid por defecto
+    val userName = MutableStateFlow("")
+    val gridOption = MutableStateFlow(8)
     val timerEnabled = MutableStateFlow(true)
-    val bombPercentage = MutableStateFlow(10)  // Porcentaje de bombas por defecto
-    val timeRemaining = MutableStateFlow(240)  // Temporizador en segundos
+    val bombPercentage = MutableStateFlow(10)
+    val timeRemaining = MutableStateFlow(240)
     var gameResult = MutableStateFlow(GameResult.InProgress)
 
     // Referencias al modelo de datos del juego
@@ -29,7 +36,13 @@ class GameViewModel : ViewModel() {
     private var timerJob: Job? = null  // Trabajo del temporizador
 
     init {
-        initializeGame()
+        viewModelScope.launch {
+            userName.value = userPreferencesRepository.userNameFlow.first()
+            gridOption.value = userPreferencesRepository.gridSizeFlow.first()
+            timerEnabled.value = userPreferencesRepository.timerEnabledFlow.first()
+            bombPercentage.value = userPreferencesRepository.bombPercentageFlow.first()
+            initializeGame()
+        }
     }
 
     // Inicializar el juego con la configuración actual
@@ -41,7 +54,7 @@ class GameViewModel : ViewModel() {
         if (timerEnabled.value) {
             startTimer()
         }
-        gameResult = MutableStateFlow(GameResult.InProgress)
+        gameResult.value = GameResult.InProgress
     }
 
     // Manejar clics en las celdas
@@ -66,8 +79,9 @@ class GameViewModel : ViewModel() {
             }
         }
     }
+
     private fun updateGameResult(status: GameStatus) {
-        when(status) {
+        when (status) {
             GameStatus.Won -> gameResult.value = GameResult.Won
             GameStatus.Lost -> gameResult.value = GameResult.LostByBomb
             else -> {}
@@ -87,12 +101,12 @@ class GameViewModel : ViewModel() {
             }
         }
     }
+
     // Función para finalizar el juego y actualizar el estado basado en GameResult
     private fun finalizeGame(result: GameResult) {
         gameResult.value = result
         stopTimer()  // Detener el temporizador en cualquier finalización de juego
     }
-
 
     // Detener el temporizador y limpiar recursos
     fun stopTimer() {
@@ -107,14 +121,53 @@ class GameViewModel : ViewModel() {
             gameResult.value = GameResult.Won
         }
         stopTimer()
+        saveGameRecord(result)
     }
+
+    private fun saveGameRecord(result: GameStatus) {
+        viewModelScope.launch {
+            val record = GameRecord(
+                userName = userName.value,
+                endTime = System.currentTimeMillis(),
+                gridSize = gridOption.value,
+                bombPercentage = bombPercentage.value,
+                numBombs = calculateTotalBombs(gridOption.value, bombPercentage.value),
+                timerEnabled = timerEnabled.value,
+                timeTaken = 240 - timeRemaining.value,
+                bombLocationX = if (result == GameStatus.Won) -1 else getBombLocation().first,
+                bombLocationY = if (result == GameStatus.Won) -1 else getBombLocation().second,
+                gameResult = result.name
+            )
+            gameDao.insert(record)
+        }
+    }
+
+    private fun getBombLocation(): Pair<Int, Int> {
+        for (y in board.cells.indices) {
+            for (x in board.cells[y].indices) {
+                if (board.cells[y][x].hasBomb && board.cells[y][x].isRevealed) {
+                    return Pair(x, y)
+                }
+            }
+        }
+        return Pair(-1, -1)
+    }
+
     // Actualizar configuraciones y reiniciar el juego
     fun updateSettings(name: String, grid: Int, timer: Boolean, percentage: Int) {
-        userName.value = name
-        gridOption.value = grid
-        timerEnabled.value = timer
-        bombPercentage.value = percentage
-        resetGame()
+        viewModelScope.launch {
+            userPreferencesRepository.updateUserName(name)
+            userPreferencesRepository.updateGridSize(grid)
+            userPreferencesRepository.updateTimerEnabled(timer)
+            userPreferencesRepository.updateBombPercentage(percentage)
+
+            userName.value = name
+            gridOption.value = grid
+            timerEnabled.value = timer
+            bombPercentage.value = percentage
+
+            resetGame()
+        }
     }
 
     // Reiniciar el juego
@@ -124,8 +177,16 @@ class GameViewModel : ViewModel() {
         initializeGame()
     }
 
+    fun getAllGames(): Flow<List<GameRecord>> = gameDao.getAllGames()
+
+    fun getGameById(gameId: Long): Flow<GameRecord?> = gameDao.getGameById(gameId)
+
     override fun onCleared() {
         super.onCleared()
         stopTimer()  // Limpiar el temporizador cuando el ViewModel se destruya
+    }
+
+    private fun calculateTotalBombs(gridSize: Int, bombPercentage: Int): Int {
+        return (gridSize * gridSize * bombPercentage / 100)
     }
 }

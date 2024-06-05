@@ -20,12 +20,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import com.example.pescamines.ui.theme.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
+import com.example.pescamines.data.MockGameDao
+import com.example.pescamines.data.MockUserPreferencesRepository
 import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.viewmodel.GameViewModel
 import kotlin.system.exitProcess
@@ -165,9 +168,13 @@ fun HomeScreen(navController: NavController, viewModel: GameViewModel) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
+    val context = LocalContext.current
+    val mockNavController = rememberNavController()
+    val mockGameDao = MockGameDao()
+    val mockUserPreferencesRepository = MockUserPreferencesRepository(context)
+    val gameViewModel = GameViewModel(mockGameDao, mockUserPreferencesRepository)
+
     PescaminesTheme {
-        val mockNavController = rememberNavController()
-        val gameViewModel = GameViewModel()
         HomeScreen(navController = mockNavController, viewModel = gameViewModel)
     }
 }

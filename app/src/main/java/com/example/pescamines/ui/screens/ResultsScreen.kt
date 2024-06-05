@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.pescamines.data.MockGameDao
+import com.example.pescamines.data.MockUserPreferencesRepository
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.ui.theme.jerseyFontFamily
@@ -222,9 +224,13 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
 @Preview(showBackground = false)
 @Composable
 fun PreviewResultsScreen() {
+    val context = LocalContext.current
+    val mockNavController = rememberNavController()
+    val mockGameDao = MockGameDao()
+    val mockUserPreferencesRepository = MockUserPreferencesRepository(context)
+    val gameViewModel = GameViewModel(mockGameDao, mockUserPreferencesRepository)
+
     PescaminesTheme {
-        val mockNavController = rememberNavController()
-        val gameViewModel = GameViewModel()
         ResultsScreen(navController = mockNavController, viewModel = gameViewModel)
     }
 }

@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.pescamines.data.MockGameDao
+import com.example.pescamines.data.MockUserPreferencesRepository
 import com.example.pescamines.model.Cell
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
@@ -349,9 +351,13 @@ fun getNumberColor(number: Int): Color {
 @Preview(showBackground = false)
 @Composable
 fun PreviewGameScreen() {
+    val context = LocalContext.current
+    val mockNavController = rememberNavController()
+    val mockGameDao = MockGameDao()
+    val mockUserPreferencesRepository = MockUserPreferencesRepository(context)
+    val gameViewModel = GameViewModel(mockGameDao, mockUserPreferencesRepository)
+
     PescaminesTheme {
-        val mockNavController = rememberNavController()
-        val gameViewModel = GameViewModel()
         GameScreen(navController = mockNavController, viewModel = gameViewModel)
     }
 }
