@@ -82,7 +82,7 @@ fun GameTopBar(navController: NavController, viewModel: GameViewModel) {
         title = {
             Text(
                 text = "PescaMines",
-                fontSize = 48.sp,
+                fontSize = 36.sp,
                 style = TextStyle(
                     shadow = Shadow(
                         color = AppColors.SecondaryButton,

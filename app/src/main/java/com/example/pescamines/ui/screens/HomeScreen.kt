@@ -74,9 +74,9 @@ fun HomeScreen(navController: NavController, viewModel: GameViewModel) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp
     val fontSize = when {
-        screenWidth < 360 -> 48.sp
-        screenWidth < 480 -> 64.sp
-        screenWidth < 720 -> 72.sp
+        screenWidth < 360 -> 36.sp
+        screenWidth < 480 -> 48.sp
+        screenWidth < 720 -> 62.sp
         else -> 90.sp
     }
 

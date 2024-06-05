@@ -75,7 +75,7 @@ fun ResultsScreen(navController: NavHostController, viewModel: GameViewModel) {
         Spacer(modifier = Modifier.height(25.dp))
         Text(
             text ="Resultat de la partida: \n $gameResult",
-            fontSize = 40.sp,
+            fontSize = 32.sp,
             style = TextStyle(
                 shadow = Shadow(
                     color = Color.Black,

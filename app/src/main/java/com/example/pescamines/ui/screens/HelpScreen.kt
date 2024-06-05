@@ -33,9 +33,9 @@ fun HelpScreen(navController: NavController) {
     val screenWidth = configuration.screenWidthDp
 
     val titleFontSize = when {
-        screenWidth < 360 -> 32.sp
-        screenWidth < 480 -> 38.sp
-        screenWidth < 720 -> 42.sp
+        screenWidth < 360 -> 28.sp
+        screenWidth < 480 -> 32.sp
+        screenWidth < 720 -> 36.sp
         else -> 48.sp
     }
 
