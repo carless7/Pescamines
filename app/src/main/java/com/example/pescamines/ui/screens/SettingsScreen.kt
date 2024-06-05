@@ -32,14 +32,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.pescamines.data.SettingsDataStore
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.ui.theme.jerseyFontFamily
 import com.example.pescamines.viewmodel.GameViewModel
 
 
+private lateinit var settingsDataStore: SettingsDataStore
 
 @Composable
 fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
@@ -224,6 +227,12 @@ fun SettingsScreen(navController: NavController, viewModel: GameViewModel) {
                     timerEnabled,
                     bombOption
                 )
+                lifecycleScope.launch {
+                    settingsDataStore.savePlayerToPreferences(userName.text, requireContext())
+                    settingsDataStore.saveGridToPreferences(gridOption, requireContext())
+                    settingsDataStore.saveBombToPreferences(bombOption, requireContext())
+                    settingsDataStore.saveTimerToPreferences(timerEnabled, requireContext())
+                }
                 navController.popBackStack()
             },
             colors = ButtonDefaults.buttonColors(
