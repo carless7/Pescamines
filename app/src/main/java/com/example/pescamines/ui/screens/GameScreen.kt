@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,8 +38,7 @@ import com.example.pescamines.viewmodel.GameViewModel
 @Composable
 fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val isTablet = screenWidth >= 600.dp  // Defineix el límit per a considerar el dispositiu com a tablet
+    val isTablet = isTabletDevice()
 
     val timeRemaining by viewModel.timeRemaining.collectAsState()
     val bombPercentage by viewModel.bombPercentage.collectAsState()
@@ -55,8 +56,7 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
         BoxWithConstraints(
             modifier = Modifier.padding(padding)
         ) {
-            val constraints = this.constraints
-            if (constraints.maxWidth > constraints.maxHeight) {
+            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 // Landscape layout
                 LandscapeLayout(isTablet, viewModel, timeRemaining, totalBombs, bombPercentage, timeEnabled, eventLog)
             } else {
@@ -68,6 +68,7 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
         // Gestió de l'estat del joc
         LaunchedEffect(gameResult) {
             if (gameResult != GameResult.InProgress) {
+                viewModel.stopTimer()
                 navController.navigate("results")
             }
         }
@@ -99,7 +100,8 @@ fun GameTopBar(navController: NavController, viewModel: GameViewModel) {
                 Icon(
                     Icons.Filled.ArrowBack,
                     tint = AppColors.SecondaryButton,
-                    contentDescription = "Back"
+                    contentDescription = "Back",
+                    modifier = Modifier.size(128.dp)
                 )
             }
         },
@@ -108,7 +110,8 @@ fun GameTopBar(navController: NavController, viewModel: GameViewModel) {
                 Icon(
                     Icons.Filled.Refresh,
                     tint = AppColors.SecondaryButton,
-                    contentDescription = "Reiniciar partida"
+                    contentDescription = "Reiniciar partida",
+                    modifier = Modifier.size(128.dp)
                 )
             }
         },
@@ -135,17 +138,41 @@ fun LandscapeLayout(
             // Tablet bi-panel: game on the left, events on the right
             Column(modifier = Modifier.weight(1f)) {
                 GameBoard(viewModel, eventLog)
-                GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
             }
             Column(modifier = Modifier.weight(1f)) {
+                GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
                 EventLog(eventLog)
             }
 
         } else {
             // Smartphone: only the game board
-            Column(modifier = Modifier.fillMaxWidth()) {
-                GameBoard(viewModel, eventLog)
-                GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BoxWithConstraints(modifier = Modifier.weight(1f)) {
+                    val maxHeight = maxHeight
+                    val maxWidth = maxWidth
+                    val boardSize = minOf(maxWidth, maxHeight)
+
+                    Box(
+                        modifier = Modifier
+                            .size(boardSize)
+                            .align(Alignment.Center)
+                    ) {
+                        GameBoard(viewModel, eventLog)
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .weight(0.3f),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
+                }
             }
         }
     }
@@ -164,9 +191,21 @@ fun PortraitLayout(
     Column(modifier = Modifier.fillMaxSize()) {
         if (isTablet) {
             // Tablet bi-panel: events on top, game on bottom
-            GameBoard(viewModel, eventLog, Modifier.weight(1f))
+            BoxWithConstraints(modifier = Modifier.weight(1f)) {
+                val maxHeight = maxHeight
+                val maxWidth = maxWidth
+                val boardSize = minOf(maxWidth, maxHeight)
+
+                Column(
+                    modifier = Modifier
+                        .size(boardSize)
+                        .align(Alignment.Center)
+                ) {
+                    GameBoard(viewModel, eventLog)
+                }
+            }
             GameStatus(timeRemaining, totalBombs, bombPercentage, timeEnabled)
-            EventLog(eventLog, Modifier.weight(1f))
+            EventLog(eventLog, Modifier.weight(1f).verticalScroll(rememberScrollState()))
         } else {
             // Smartphone: only the game board
             GameBoard(viewModel, eventLog)
@@ -269,6 +308,15 @@ fun EventLog(eventLog: List<String>, modifier: Modifier = Modifier) {
             Text(event, style = TextStyle(fontSize = 16.sp, color = AppColors.ColorTypography))
         }
     }
+}
+
+@Composable
+fun isTabletDevice(): Boolean {
+    val context = LocalContext.current
+    val configuration = context.resources.configuration
+    val screenLayout = configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
+    return (screenLayout == Configuration.SCREENLAYOUT_SIZE_LARGE
+            || screenLayout == Configuration.SCREENLAYOUT_SIZE_XLARGE)
 }
 
 fun calculateTotalBombs(gridSize: Int, bombPercentage: Int): Int {

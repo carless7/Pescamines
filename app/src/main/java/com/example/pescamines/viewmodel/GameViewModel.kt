@@ -33,7 +33,7 @@ class GameViewModel : ViewModel() {
     }
 
     // Inicializar el juego con la configuración actual
-    fun initializeGame() {
+    private fun initializeGame() {
         bombManager = BombManager((gridOption.value * gridOption.value * bombPercentage.value / 100))
         numberCalculator = NumberCalculator()
         board = Board(gridOption.value)
@@ -95,7 +95,7 @@ class GameViewModel : ViewModel() {
 
 
     // Detener el temporizador y limpiar recursos
-    private fun stopTimer() {
+    fun stopTimer() {
         timerJob?.cancel()
     }
 

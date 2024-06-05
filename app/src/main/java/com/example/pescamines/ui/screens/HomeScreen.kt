@@ -129,7 +129,7 @@ fun HomeScreen(navController: NavController, viewModel: GameViewModel) {
             }
             Button(
                 onClick = {
-                    viewModel.initializeGame()
+                    viewModel.resetGame()
                     navController.navigate("game")
                           },
                 colors = ButtonDefaults.buttonColors(
