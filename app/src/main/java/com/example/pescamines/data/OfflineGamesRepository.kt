@@ -1,4 +1,4 @@
-package com.example.pescamines.persistence
+package com.example.pescamines.data
 
 import kotlinx.coroutines.flow.Flow
 

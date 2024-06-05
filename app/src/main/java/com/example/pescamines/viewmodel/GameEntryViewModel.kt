@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.pescamines.persistence.Game
-import com.example.pescamines.persistence.GamesRepository
+import com.example.pescamines.data.Game
+import com.example.pescamines.data.GamesRepository
 
 class GameEntryViewModel(private val gameRepository: GamesRepository) : ViewModel()  {
     var gameUiState by mutableStateOf(GameUiState())

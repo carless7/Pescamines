@@ -73,5 +73,4 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.datastore:datastore-preferences-rxjava2:1.1.1")
     implementation("androidx.datastore:datastore-preferences-rxjava3:1.1.1")
-
 }

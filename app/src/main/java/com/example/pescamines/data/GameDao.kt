@@ -1,4 +1,4 @@
-package com.example.pescamines.persistence
+package com.example.pescamines.data
 
 import androidx.room.Dao
 import androidx.room.Delete
