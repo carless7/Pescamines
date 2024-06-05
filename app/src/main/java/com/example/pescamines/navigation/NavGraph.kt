@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.pescamines.ui.screens.GameDetailsScreen
 import com.example.pescamines.ui.screens.HomeScreen
 import com.example.pescamines.ui.screens.HelpScreen
@@ -36,9 +37,13 @@ fun AppNavigation(gameViewModel: GameViewModel) {
         composable("history") {
             HistoryScreen(navController, gameViewModel)
         }
-        composable("gameDetails/{gameId}") { backStackEntry ->
+        composable(
+            "gameDetails/{gameId}",
+            arguments = listOf(navArgument("gameId") { defaultValue = -1L })
+        ) { backStackEntry ->
             val gameId = backStackEntry.arguments?.getLong("gameId") ?: return@composable
             GameDetailsScreen(navController = navController, gameId = gameId, viewModel = gameViewModel)
         }
     }
 }
+
