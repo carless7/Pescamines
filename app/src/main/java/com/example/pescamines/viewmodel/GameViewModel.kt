@@ -13,6 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -27,6 +28,10 @@ class GameViewModel(
     val bombPercentage = MutableStateFlow(10)
     val timeRemaining = MutableStateFlow(240)
     var gameResult = MutableStateFlow(GameResult.InProgress)
+
+    // Llista d'esdeveniments
+    private val _eventLog = MutableStateFlow<List<String>>(emptyList())
+    val eventLog: StateFlow<List<String>> get() = _eventLog
 
     // Referencias al modelo de datos del juego
     lateinit var board: Board
@@ -54,6 +59,7 @@ class GameViewModel(
         if (timerEnabled.value) {
             startTimer()
         }
+        clearEventLog()
         gameResult.value = GameResult.InProgress
     }
 
@@ -66,6 +72,7 @@ class GameViewModel(
             if (status != GameStatus.InProgress) {
                 endGame(status)
             }
+            addEventToLog("Casella seleccionada: ($x, $y) amb ⌛ ${timeRemaining.value} segons restants")
         }
     }
 
@@ -77,7 +84,16 @@ class GameViewModel(
             if (status != GameStatus.InProgress) {
                 endGame(status)
             }
+            addEventToLog("\uD83D\uDEA9 Casella marcada/desmarcada: ($x, $y)")
         }
+    }
+
+    private fun addEventToLog(event: String) {
+        _eventLog.value += event
+    }
+
+    private fun clearEventLog() {
+        _eventLog.value = emptyList()
     }
 
     private fun updateGameResult(status: GameStatus) {
@@ -174,6 +190,7 @@ class GameViewModel(
     fun resetGame() {
         timeRemaining.value = 240
         stopTimer()
+        clearEventLog()
         initializeGame()
     }
 

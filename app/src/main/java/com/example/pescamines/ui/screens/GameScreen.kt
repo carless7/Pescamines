@@ -36,7 +36,7 @@ import com.example.pescamines.ui.theme.jerseyFontFamily
 import com.example.pescamines.viewmodel.GameResult
 import com.example.pescamines.viewmodel.GameViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     val configuration = LocalConfiguration.current
@@ -48,8 +48,7 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     val timeEnabled by viewModel.timerEnabled.collectAsState()
     val totalBombs = calculateTotalBombs(gridValue, bombPercentage)
     val gameResult by viewModel.gameResult.collectAsState()
-
-    val eventLog = remember { mutableStateListOf<String>() } // Llista d'esdeveniments
+    val eventLog by viewModel.eventLog.collectAsState()
 
     Scaffold(
         topBar = { GameTopBar(navController, viewModel) },
@@ -76,7 +75,6 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameTopBar(navController: NavController, viewModel: GameViewModel) {
@@ -133,7 +131,7 @@ fun LandscapeLayout(
     totalBombs: Int,
     bombPercentage: Int,
     timeEnabled: Boolean,
-    eventLog: MutableList<String>
+    eventLog: List<String>
 ) {
     Row(modifier = Modifier.fillMaxSize()) {
         if (isTablet) {
@@ -188,7 +186,7 @@ fun PortraitLayout(
     totalBombs: Int,
     bombPercentage: Int,
     timeEnabled: Boolean,
-    eventLog: MutableList<String>
+    eventLog: List<String>
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         if (isTablet) {
@@ -217,9 +215,8 @@ fun PortraitLayout(
 }
 
 @Composable
-fun GameBoard(viewModel: GameViewModel, eventLog: MutableList<String>, modifier: Modifier = Modifier) {
+fun GameBoard(viewModel: GameViewModel, eventLog: List<String>, modifier: Modifier = Modifier) {
     val boardSize by viewModel.gridOption.collectAsState()
-    val timeRemaining by viewModel.timeRemaining.collectAsState()
 
     BoxWithConstraints(modifier = modifier
         .padding(16.dp)
@@ -234,7 +231,7 @@ fun GameBoard(viewModel: GameViewModel, eventLog: MutableList<String>, modifier:
                     for (x in 0 until boardSize) {
                         GameCell(viewModel, x, y, viewModel.board.cells[y][x], cellSize) {
                             // Afegir esdeveniment al log
-                            eventLog.add("Casella seleccionada: ($x, $y) amb $timeRemaining segons restants")
+                            viewModel.onCellClicked(x, y)
                         }
                         if (x < boardSize - 1) {
                             Spacer(modifier = Modifier.width(1.dp))
