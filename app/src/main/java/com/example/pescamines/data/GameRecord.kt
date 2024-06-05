@@ -1,4 +1,4 @@
-package com.example.pescamines.model
+package com.example.pescamines.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

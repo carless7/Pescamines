@@ -1,6 +1,5 @@
 package com.example.pescamines.data
 
-import com.example.pescamines.model.GameRecord
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf

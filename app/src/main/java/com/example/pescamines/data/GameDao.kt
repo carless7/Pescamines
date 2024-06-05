@@ -3,7 +3,6 @@ package com.example.pescamines.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.pescamines.model.GameRecord
 import kotlinx.coroutines.flow.Flow
 
 @Dao

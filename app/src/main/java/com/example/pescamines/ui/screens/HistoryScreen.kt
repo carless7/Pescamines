@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.pescamines.data.GameRecord
 import com.example.pescamines.data.MockGameDao
 import com.example.pescamines.data.MockUserPreferencesRepository
-import com.example.pescamines.model.GameRecord
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.ui.theme.jerseyFontFamily
@@ -134,9 +134,33 @@ fun GameListItem(game: GameRecord, onGameClick: (Long) -> Unit) {
         colors = CardDefaults.cardColors(containerColor = AppColors.Background)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "Jugador: ${game.userName}", color = AppColors.ColorTypography)
-            Text(text = "Resultat: ${game.gameResult}", color = AppColors.ColorTypography)
-            Text(text = "Data: $formattedDate", color = AppColors.ColorTypography)
+            Text(
+                text = "Jugador: ${game.userName}",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Resultat: ${game.gameResult}",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Data: $formattedDate",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
         }
     }
 }
@@ -148,14 +172,78 @@ fun GameDetails(game: GameRecord?, modifier: Modifier = Modifier) {
         val formattedDate = dateFormatter.format(Date(game.endTime))
 
         Column(modifier = modifier.padding(16.dp)) {
-            Text(text = "Jugador: ${game.userName}", color = AppColors.ColorTypography)
-            Text(text = "Resultat: ${game.gameResult}", color = AppColors.ColorTypography)
-            Text(text = "Data: $formattedDate", color = AppColors.ColorTypography)
-            Text(text = "Mida: ${game.gridSize}", color = AppColors.ColorTypography)
-            Text(text = "Percentatge de Bombes: ${game.bombPercentage}%", color = AppColors.ColorTypography)
-            Text(text = "Nº de Mines: ${game.numBombs}", color = AppColors.ColorTypography)
-            Text(text = "Temps Emprat: ${game.timeTaken}s", color = AppColors.ColorTypography)
-            Text(text = "Localització de la Bomba: (${game.bombLocationX}, ${game.bombLocationY})", color = AppColors.ColorTypography)
+            Text(
+                text = "Jugador: ${game.userName}",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Resultat: ${game.gameResult}",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Data: $formattedDate",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Mida: ${game.gridSize}",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Percentatge de Bombes: ${game.bombPercentage}%",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Nº de Mines: ${game.numBombs}",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Temps Emprat: ${game.timeTaken}s",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Text(
+                text = "Localització de la Bomba: (${game.bombLocationX}, ${game.bombLocationY})",
+                style = TextStyle(
+                    color = AppColors.ColorTypography,
+                    fontSize = 18.sp,
+                    fontFamily = jerseyFontFamily,
+                    fontWeight = FontWeight.Normal
+                )
+            )
         }
     } ?: run {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

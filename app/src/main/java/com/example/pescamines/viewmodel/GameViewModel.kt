@@ -6,7 +6,7 @@ import com.example.pescamines.data.GameDao
 import com.example.pescamines.data.UserPreferencesRepository
 import com.example.pescamines.model.Board
 import com.example.pescamines.model.BombManager
-import com.example.pescamines.model.GameRecord
+import com.example.pescamines.data.GameRecord
 import com.example.pescamines.model.GameStatus
 import com.example.pescamines.model.NumberCalculator
 import kotlinx.coroutines.Job

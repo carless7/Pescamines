@@ -15,7 +15,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,7 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.pescamines.data.MockGameDao
 import com.example.pescamines.data.MockUserPreferencesRepository
-import com.example.pescamines.model.GameRecord
+import com.example.pescamines.data.GameRecord
 import com.example.pescamines.ui.theme.AppColors
 import com.example.pescamines.ui.theme.PescaminesTheme
 import com.example.pescamines.ui.theme.jerseyFontFamily
@@ -101,8 +100,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
             Text(
@@ -110,8 +108,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
             Text(
@@ -119,8 +116,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
             Text(
@@ -128,8 +124,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
             Text(
@@ -137,8 +132,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
             Text(
@@ -146,8 +140,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
             Text(
@@ -155,8 +148,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
             Text(
@@ -164,8 +156,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 style = TextStyle(
                     color = AppColors.ColorTypography,
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = jerseyFontFamily
                 )
             )
         }
@@ -176,8 +167,7 @@ fun GameDetail(game: GameRecord?, modifier: Modifier = Modifier) {
                 color = AppColors.ColorTypography,
                 style = TextStyle(
                     fontSize = 24.sp,
-                    fontFamily = jerseyFontFamily,
-                    fontWeight = FontWeight.SemiBold
+                    fontFamily = jerseyFontFamily
                 )
             )
         }
